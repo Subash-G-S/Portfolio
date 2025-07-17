@@ -21,11 +21,8 @@ body {
 
 h2 {
   font-weight: 700;
-  color: rgb(66, 66, 66); /* Neon blue text color */
+  color: rgb(0, 234, 255);
   margin-bottom: 30px;
-  text-shadow: 
-    
-    0 2px 3px #00fffb;  /* extended glow downward */
 }
 
 
