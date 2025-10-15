@@ -85,7 +85,7 @@ Always eager to explore new ways of merging **tech with real-world impact**.
 
 ## 📫 Contact
 
-- 📧 **Email:** your-email@example.com  
+- 📧 **Email:** subashgopi2006@gmail.com  
 - 💼 **LinkedIn:** [linkedin.com/in/subash-g-s](#)  
 - 💻 **GitHub:** [github.com/Subash-G-S](#)  
 - 🌐 **Portfolio:** [portfoliosub.vercel.app](https://portfoliosub.vercel.app)
