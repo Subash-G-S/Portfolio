@@ -154,7 +154,7 @@ span{
 }
 @keyframes cursor {
     to{
-        border-left: 3px solid rgb(0, 255, 187);
+        border-left: 2px solid rgb(0, 255, 187);
     }
 }
 @keyframes words {
@@ -168,9 +168,31 @@ span{
         content: "FullStack Developer";
     }
     61%, 80%{
-        content: "Software Development";
+        content: "Web Developer";
     }
     81%, 100%{
         content: "Graphic Designer";
+    }
+}
+
+@media (max-width:1000px){
+    .home{
+        gap: 4;
+    }
+}
+@media(max-width: 995px){
+    .home{
+        text-align: center
+    }
+    .home .home-content h3{
+        font-size: 2.6rem;
+    }
+    .home .home-content h1{
+        font-size: 5rem;
+    }
+}
+@media(max-width:607.99px){
+    header{
+        display: none;
     }
 }
