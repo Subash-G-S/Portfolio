@@ -21,7 +21,7 @@ body{
     height: 100vh;
     overflow-x: hidden;
 }
-header{
+.desktop{
     margin-top: 20px;
     position: fixed;
     top: 0;
@@ -35,6 +35,31 @@ header{
     align-items: center;
     z-index: 100;
 }
+.mobile{
+    margin-top: 20px;
+    position: fixed;
+    top: 0;
+    width: 94%;
+    background-color: transparent;
+    filter: drop-shadow(10px);
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    transition: 0.3s ease;
+}
+.mobile nav a{
+    background-color: transparent;
+    font-size: 1.8rem;
+    color: white;
+    margin-left: 4rem;
+    transition: 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+.mobile nav a:hover,
+.mobile nav a.active{
+    color: rgb(0, 255, 187);
+    border-bottom: 3px solid;
+}
 .logo{
     font-size: 3rem;
     font-weight: 800;
@@ -45,7 +70,7 @@ header{
 .logo:hover{
     transform: scale(1.1);
 }
-nav a{
+.desktop nav a{
     font-size: 1.8rem;
     color: white;
     margin-left: 4rem;
@@ -53,8 +78,8 @@ nav a{
     transition: 0.3s ease;
     border-bottom: 3px solid transparent;
 }
-nav a:hover,
-nav a.active{
+.desktop nav a:hover,
+.desktop nav a.active{
     color: rgb(0, 255, 187);
     border-bottom: 3px solid;
 }
@@ -192,7 +217,7 @@ span{
     }
 }
 @media(max-width:607.99px){
-    header{
+    .desktop{
         display: none;
     }
 }
