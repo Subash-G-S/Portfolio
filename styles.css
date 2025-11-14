@@ -1,242 +1,208 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins%3Awght%40100%3B200%3B300%3B400%3B500%3B600&display=swap%27%29%3B");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
 *{
-    margin: 0%;
-    padding: 0%;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
     text-decoration: none;
     border: none;
     outline: none;
-    font-family: 'Poppins',sans-serif;
-
+    font-family: 'Poppins', sans-serif;
 }
-html{
+
+html {
     font-size: 62.5%;
 }
-body{
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background-color: black;
-    color: aliceblue;
-    width: 100%;
-    height: 100vh;
+
+body {
+    background: #000;
+    color: #fff;
     overflow-x: hidden;
 }
-.desktop{
-    margin-top: 20px;
+
+/* ================= DESKTOP NAV ================= */
+.desktop {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    padding: 1rem 3%;
-    background-color: transparent;
-    filter: drop-shadow(10px);
+    padding: 1.5rem 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 100;
-}
-.mobile{
-    margin-top: 20px;
-    position: fixed;
-    top: 20px;
-    width: 94%;
-    background-color: transparent;
-    filter: drop-shadow(10px);
-    display: flex;
-    justify-content:center;
-    align-items: center;
-    transition: 0.3s ease;
-}
-.mobile nav a{
-    background-color: transparent;
-    font-size: 1.8rem;
-    color: white;
-    margin-left: 4rem;
-    transition: 0.3s ease;
-    border-bottom: 3px solid transparent;
-}
-.mobile nav a:hover,
-.mobile nav a.active{
-    color: rgb(0, 255, 187);
-    border-bottom: 3px solid;
-}
-.logo{
-    font-size: 3rem;
-    font-weight: 800;
-    color: rgb(0, 255, 187);
-    cursor: pointer;
-    transition: 0.5s ease;
-}
-.logo:hover{
-    transform: scale(1.1);
-}
-.desktop nav a{
-    font-size: 1.8rem;
-    color: white;
-    margin-left: 4rem;
-    font-weight: 500;
-    transition: 0.3s ease;
-    border-bottom: 3px solid transparent;
-}
-.desktop nav a:hover,
-.desktop nav a.active{
-    color: rgb(0, 255, 187);
-    border-bottom: 3px solid;
-}
-section{
-    min-height: 100vh;
-    padding: 5rem 12% 5rem;
+    z-index: 200;
 }
 
-.home{
+.logo {
+    font-size: 3rem;
+    font-weight: 700;
+    color: rgb(0,255,187);
+    transition: .3s;
+}
+
+.desktop nav a {
+    margin-left: 3rem;
+    font-size: 1.8rem;
+    color: #fff;
+    border-bottom: 3px solid transparent;
+    transition: .3s;
+}
+
+.desktop nav a:hover,
+.desktop nav a.active {
+    color: rgb(0,255,187);
+    border-bottom: 3px solid rgb(0,255,187);
+}
+
+/* ================= MOBILE NAV ================= */
+.mobile {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    padding: 1rem;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 2rem;
     display: flex;
     justify-content: center;
+    z-index: 300;
+}
+
+.mobile nav a {
+    margin: 0 2rem;
+    font-size: 2.4rem;
+    color: #fff;
+    transition: .3s;
+}
+
+.mobile nav a.active,
+.mobile nav a:hover {
+    color: rgb(0,255,187);
+}
+
+/* ================= HOME ================= */
+section {
+    padding: 12rem 5% 5rem;
+}
+
+.home {
+    display: flex;
     align-items: center;
-    gap: 8rem;
-    background-color: black;
-    line-height: 40px;
-}
-.home .home-content h1{
-    font-size: 6rem;
-    font-weight: 700;
-    line-height: 1.3;
-}
-span{
-    color: rgb(0, 255, 187);
-}
-.home .home-content h3{
-    font-size: 3rem;
-}
-.home .home-content h1:hover{
-    color: darkgray;
-}
-.home-content p{
-    font-size: 1.2rem;
-    width: 50%;
-    line-height: 20px;
-}
-.social-icons a{
-    color: rgb(0, 255, 187);
-    display: inline-flex;
     justify-content: center;
-    align-items: center;
+    gap: 5rem;
+    flex-wrap: wrap;
+}
+
+.home h1 {
+    font-size: clamp(3rem, 6vw, 6rem);
+    font-weight: 700;
+}
+
+.home h3 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+}
+
+.home-content p {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+    max-width: 600px;
+    line-height: 2.3rem;
+}
+
+/* ================= SOCIAL ICONS ================= */
+.social-icons a {
+    display: inline-flex;
     width: 4rem;
     height: 4rem;
-    background-color: transparent;
-    border: 0.2rem solid rgb(0, 255, 187);
-    font-size: 2rem;
+    
+    border: 2px solid rgb(0,255,187);
     border-radius: 50%;
-    margin: 3rem 1.5rem 3rem 0;
-    transition: 0.3s ease;
+    justify-content: center;
+    align-items: center;
+    margin: 2.6rem 3rem 1rem 0;
+    font-size: 2rem;
+    color: rgb(0,255,187);
+    transition: .3s;
 }
 
-.social-icons a:hover{
-    background-color: rgb(0, 255, 187);
-    color: rgb(0, 0, 0);
-    box-shadow: 0 0 25px rgb(0, 255, 187);
-    transform: scale(1.3);
+.social-icons a:hover {
+    background: rgb(0,255,187);
+    color: #000;
+    transform: scale(1.2);
+    box-shadow: 0 0 25px rgb(0,255,187);
 }
-.hire{
+
+/* ================= BUTTON ================= */
+.hire {
     display: inline-block;
-    padding: 1rem 2.8rem;
-    background-color: black;
-    border: 0.3px solid rgb(0, 255, 187);
-    letter-spacing: 0.3rem;
-    font-weight: 800;
-    font-size: 1.4rem;
+    margin-top: 2rem;
+    padding: 1rem 3rem;
     border-radius: 3rem;
-    color: white;
-    transition: 0.4s ease;
-    cursor: pointer;
-}
-.hire:hover{
-    transform: scale(1.1);
-    background-color: rgb(0, 255, 187);
-    color: black;
-    box-shadow: 0 0 25px rgb(0, 255, 187);
-}
-.typing-text{
-    font-size: 34px;
-    font-weight: 600;
-    min-width: 280px;
-}
-.typing-text span{
-    position: relative;
+    border: 2px solid rgb(0,255,187);
+    color: #fff;
+    font-size: 1.4rem;
+    letter-spacing: .2rem;
+    transition: .3s;
 }
 
-.typing-text span::before{
-    content : "Web Developer";
-    color: rgb(0, 255, 187);
+.hire:hover {
+    background: rgb(0,255,187);
+    color: #000;
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgb(0,255,187);
+}
+
+/* ================= TYPING TEXT ================= */
+.typing-text {
+    font-size: 3rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.typing-text span {
+    position: relative;
+    color: rgb(0,255,187);
+}
+
+.typing-text span::before {
+    content: "Web Developer";
     animation: words 10s infinite;
 }
 
-.typing-text span::after{
+.typing-text span::after {
     content: "";
-    background-color: black;
     position: absolute;
-    width: 100px;
+    right: -10px;
+    top: 0;
+    width: 3px;
     height: 100%;
-    border-left: 3px solid black;
-    right: -8;
-    animation: cursor 0.6s infinite;
-}
-@keyframes cursor {
-    to{
-        border-left: 2px solid rgb(0, 255, 187);
-    }
-}
-@keyframes words {
-    0%, 20%{
-        content: "Web Designer";
-    }
-    21%, 40%{
-        content: "Software Engineer";
-    }
-    41%, 60%{
-        content: "FullStack Developer";
-    }
-    61%, 80%{
-        content: "Web Developer";
-    }
-    81%, 100%{
-        content: "Graphic Designer";
-    }
+    background: rgb(0,255,187);
+    animation: cursorBlink .7s infinite;
 }
 
-@media (max-width:1000px){
-    .home{
-        gap: 4;
-    }
+@keyframes cursorBlink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
 }
-@media(max-width: 995px){
-    .home{
-        text-align: center
-    }
-    .home .home-content h3{
-        font-size: 2.6rem;
-    }
+
+@keyframes words {
+    0%, 20% { content: "Web Designer"; }
+    21%, 40% { content: "Software Engineer"; }
+    41%, 60% { content: "FullStack Developer"; }
+    61%, 80% { content: "Web Developer"; }
+    81%, 100% { content: "Graphic Designer"; }
 }
-@media(max-width:609.59px){
-    .desktop{
-        display: none;
-    }
+
+/* ================= RESPONSIVENESS ================= */
+@media (max-width: 768px) {
+    .desktop { display: none !important; }
+    .mobile { display: flex !important; }
 }
-@media(min-width: 609.69px){
-    .mobile{
-        display: none;
-    }
-}
-@media(min-width: 320px){
-    .home .home-content h1{
-        font-size: 3.5rem;
-    }
-    .home .home-content h3{
-        font-size:2rem;
-    }
-    .mobile{
-        width: 84%;
-    }
-    .typing-text span::after{
-        width: 0%;
-    }
+
+@media (min-width: 769px) {
+    .desktop { display: flex !important; }
+    .mobile { display: none !important; }
 }
