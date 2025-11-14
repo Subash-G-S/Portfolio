@@ -233,5 +233,10 @@ span{
     .home .home-content h3{
         font-size:2rem;
     }
-    
+    .mobile{
+        width: 84%;
+    }
+    .typing-text span::after{
+        width: 0%;
+    }
 }
