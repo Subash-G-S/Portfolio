@@ -62,8 +62,8 @@ body {
     transform: translateX(-50%);
     width: 90%;
     padding: 1rem;
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.063);
+    backdrop-filter: blur(7px);
     border-radius: 2rem;
     display: flex;
     justify-content: center;
