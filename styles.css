@@ -217,6 +217,61 @@ section {
     line-height: 1.6;
     color: #ccc;
 }
+.edu-card {
+    display: flex;
+    flex-direction: column;
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    overflow: hidden;
+}
+
+.edu-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Header row */
+.edu-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.edu-details {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+}
+.edu-card.active {
+    border: 1px solid #00adb5;
+    box-shadow: 0 0 20px rgba(0, 173, 181, 0.2);
+}
+.edu-card.active .edu-details {
+    height: auto;
+    opacity: 1;
+}
+.arrow {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.edu-card.active .arrow {
+    transform: rotate(180deg);
+}
+
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 /* ================= TYPING TEXT ================= */
 .typing-text {
     font-size: 3rem;
