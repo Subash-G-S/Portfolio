@@ -154,7 +154,69 @@ section {
     transform: scale(1.05);
     box-shadow: 0 0 25px rgb(0,255,187);
 }
+/*================== EDUCATION ================= */
+.education {
+    padding: 100px 10%;
+    color: #fff;
+}
 
+.education .title {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 50px;
+}
+
+.education .title span {
+    color: rgb(0,255,187);
+}
+
+/* Timeline Layout */
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Cards */
+.edu-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 12px;
+    transition: 0.3s ease;
+}
+
+.edu-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(0, 173, 181, 0.3);
+}
+
+/* Icon */
+.edu-icon {
+    font-size: 24px;
+    color: rgb(0,255,187);
+    min-width: 40px;
+}
+
+/* Content */
+.edu-content h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.edu-content h3 {
+    font-size: 14px;
+    color: #aaa;
+    margin: 5px 0 10px;
+}
+
+.edu-content p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #ccc;
+}
 /* ================= TYPING TEXT ================= */
 .typing-text {
     font-size: 3rem;
