@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | Subash</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .wait {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .wait h1 {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .wait h1 span {
+            color: rgb(0, 255, 187);
+        }
+
+        .wait p {
+            color: #aaa;
+            margin-bottom: 30px;
+            font-size: medium;
+        }
+
+    
+        /* HTML: <div class="loader"></div> */
+.loader {
+  width: 40px;
+  aspect-ratio: 1;
+  color: rgb(0, 255, 187);
+  position: relative;
+  background: radial-gradient(10px,currentColor 94%,#0000);
+}
+.loader:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(9px at bottom right,#0000 94%,currentColor) top    left,
+    radial-gradient(9px at bottom left ,#0000 94%,currentColor) top    right,
+    radial-gradient(9px at top    right,#0000 94%,currentColor) bottom left,
+    radial-gradient(9px at top    left ,#0000 94%,currentColor) bottom right;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  animation: l18 1.5s infinite cubic-bezier(0.3,1,0,1);
+}
+@keyframes l18 {
+   33%  {inset:-10px;transform: rotate(0deg)}
+   66%  {inset:-10px;transform: rotate(90deg)}
+   100% {inset:0    ;transform: rotate(90deg)}
+}
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            border: 1px solid rgb(0, 255, 187);
+            color: rgb(0, 255, 187);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgb(0, 255, 187);
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="wait">
+        <div class="loader"></div>
+        <br>
+        <br>
+
+        <h1>Page <span>Under Development</span></h1>
+
+        <p>
+            This section is currently being built.  
+            I’m working on something better. It’ll be worth the wait.
+        </p>
+
+        <a href="index.html" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back to Home
+        </a>
+    </section>
+
+</body>
+</html>
