@@ -306,10 +306,10 @@ section {
 }
 
 @keyframes words {
-    0%, 20% { content: "Web Designer"; }
+    0%, 20% { content: "FullStack Developer"; }
     21%, 40% { content: "Software Engineer"; }
-    41%, 60% { content: "FullStack Developer"; }
-    61%, 80% { content: "Web Developer"; }
+    41%, 60% { content: "Web Designer"; }
+    61%, 80% { content: "Cinematographer"; }
     81%, 100% { content: "Graphic Designer"; }
 }
 
