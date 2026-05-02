@@ -75,10 +75,17 @@ body:has(button:hover) #cursor-ring{
 body::before{
   content:'';position:fixed;top:0;left:0;width:100%;height:100%;
   background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);
-  pointer-events:none;z-index:1000;animation:scanMove 8s linear infinite;
+  pointer-events:none;z-index:1;animation:scanMove 8s linear infinite;
 }
 @keyframes scanMove{0%{background-position:0 0;}100%{background-position:0 100px;}}
-
+section, nav, footer {
+  position: relative;
+  z-index: 10;
+}
+a {
+  position: relative;
+  z-index: 20;
+}
 /* GRID BG */
 body::after{
   content:'';position:fixed;top:0;left:0;width:100%;height:100%;
@@ -590,7 +597,7 @@ footer{
 </div>
 
 <div class="noise"></div>
-<div class="scan-bar"></div>
+
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 <canvas id="particles"></canvas>
