@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zygn Media</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: #0a0a0a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+    }
+
+    /* soft animated gradient glow */
+    body::after {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.05), transparent 40%);
+      animation: moveGlow 12s linear infinite;
+    }
+
+    @keyframes moveGlow {
+      0% { transform: translate(0,0); }
+      50% { transform: translate(-10%, -10%); }
+      100% { transform: translate(0,0); }
+    }
+
+    /* film grain */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: url('https://www.transparenttextures.com/patterns/noise.png');
+      opacity: 0.05;
+      animation: grain 1s steps(8) infinite;
+    }
+
+    @keyframes grain {
+      0%,100% { transform: translate(0,0); }
+      20% { transform: translate(-3%, 2%); }
+      40% { transform: translate(2%, -3%); }
+      60% { transform: translate(-2%, 1%); }
+      80% { transform: translate(1%, -2%); }
+    }
+
+    .container {
+      text-align: center;
+      z-index: 2;
+      max-width: 700px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.8rem;
+      letter-spacing: 2px;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: reveal 1.8s ease forwards;
+    }
+
+    h1 span {
+      font-weight: 600;
+    }
+
+    @keyframes reveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .line {
+      margin: 25px auto;
+      width: 0;
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+      animation: expand 2s ease forwards;
+      animation-delay: 0.8s;
+    }
+
+    @keyframes expand {
+      to {
+        width: 50%;
+      }
+    }
+
+    p {
+      margin-top: 20px;
+      font-size: 1rem;
+      color: #aaa;
+      line-height: 1.7;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: reveal 1.5s ease forwards;
+      animation-delay: 1.2s;
+    }
+
+    .brand {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      color: #777;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards;
+      animation-delay: 2s;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* light sweep effect */
+    .sweep {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.08),
+        transparent
+      );
+      animation: sweep 6s infinite;
+    }
+
+    @keyframes sweep {
+      0% { left: -100%; }
+      100% { left: 150%; }
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="sweep"></div>
+
+  <div class="container">
+    <h1><span>Under</span> Development</h1>
+
+    <div class="line"></div>
+
+    <p>
+      A visual portfolio shaped with intent, precision, and storytelling.  
+      Currently in production.
+    </p>
+
+    <div class="brand">SUBASH</div>
+  </div>
+</body>
+</html>
