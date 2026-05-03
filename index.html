@@ -9,19 +9,31 @@
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   :root { --ease: cubic-bezier(0.76, 0, 0.24, 1); --d-glow: #5effa0; --c-glow: #f5c97a; }
 
-  html, body { width: 100%; height: 100%; overflow: hidden; background: #030308; cursor: none; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #030308; }
 
-  #cursor {
-    position: fixed; width: 12px; height: 12px; border-radius: 50%;
-    background: #fff; pointer-events: none; z-index: 9999;
-    mix-blend-mode: difference;
-    transition: width 0.3s var(--ease), height 0.3s var(--ease);
-    transform: translate(-50%, -50%);
+  /* Desktop cursor */
+  @media (hover: hover) {
+    body { cursor: none; }
+    #cursor {
+      position: fixed; width: 12px; height: 12px; border-radius: 50%;
+      background: #fff; pointer-events: none; z-index: 9999;
+      mix-blend-mode: difference;
+      transition: width 0.3s var(--ease), height 0.3s var(--ease);
+      transform: translate(-50%, -50%);
+    }
+    #cursor.expand { width: 44px; height: 44px; }
   }
-  #cursor.expand { width: 44px; height: 44px; }
+  @media (hover: none) { #cursor { display: none; } }
 
-  .stage { width: 100vw; height: 100vh; display: flex; position: relative; }
+  /* ── STAGE ── */
+  .stage {
+    width: 100vw; height: 100dvh;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+  }
 
+  /* ── PANELS ── */
   .panel {
     position: relative; overflow: hidden;
     display: flex; align-items: center; justify-content: center;
@@ -31,71 +43,81 @@
   .panel-dev { background: #060610; }
   .panel-cin { background: #0c0805; }
 
-  /* Subtle — only 1.15 vs 0.85 */
-  .stage.hover-dev .panel-dev { flex: 1.15; }
-  .stage.hover-dev .panel-cin { flex: 0.85; }
-  .stage.hover-cin .panel-cin { flex: 1.15; }
-  .stage.hover-cin .panel-dev { flex: 0.85; }
+  /* Desktop hover expand */
+  @media (hover: hover) {
+    .stage.hover-dev .panel-dev { flex: 1.15; }
+    .stage.hover-dev .panel-cin { flex: 0.85; }
+    .stage.hover-cin .panel-cin { flex: 1.15; }
+    .stage.hover-cin .panel-dev { flex: 0.85; }
+  }
 
   .panel canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
+  /* ── CONTENT ── */
   .content {
     position: relative; z-index: 10; text-align: center;
     display: flex; flex-direction: column; align-items: center;
-    padding: 2rem; white-space: nowrap;
+    padding: 2rem;
   }
 
   .role-tag {
-    font-family: 'DM Mono', monospace; font-size: 0.58rem;
-    font-weight: 300; letter-spacing: 0.38em; text-transform: uppercase;
-    margin-bottom: 1.8rem; opacity: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(0.48rem, 1.5vw, 0.58rem);
+    font-weight: 300; letter-spacing: 0.32em; text-transform: uppercase;
+    margin-bottom: 1.4rem; opacity: 0;
     animation: riseIn 1s var(--ease) 0.7s forwards;
+    white-space: nowrap;
   }
   .panel-dev .role-tag { color: var(--d-glow); }
   .panel-cin .role-tag { color: var(--c-glow); }
 
   .big-name {
     font-family: 'Playfair Display', serif; font-weight: 300;
-    font-size: clamp(3.2rem, 6.5vw, 6rem); line-height: 0.88;
-    letter-spacing: -0.02em; opacity: 0;
+    font-size: clamp(4rem, 8vw, 8rem);
+    white-space: nowrap;
+    line-height: 0.88; letter-spacing: -0.02em; opacity: 0;
     animation: riseIn 1.1s var(--ease) 0.3s forwards;
   }
   .panel-dev .big-name { color: #dde0f5; }
   .panel-cin .big-name { color: #f0e0c0; }
-  .big-name em { font-style: italic; display: block; }
+  .big-name em { font-style: italic; display: inline; }
   .panel-dev .big-name em { color: var(--d-glow); }
   .panel-cin .big-name em { color: var(--c-glow); }
 
   .descriptor {
-    font-family: 'DM Sans', sans-serif; font-size: clamp(0.6rem, 1.2vw, 0.72rem);
-    font-weight: 200; letter-spacing: 0.22em; text-transform: uppercase;
-    margin-top: 1.6rem; margin-bottom: 2.8rem; opacity: 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(0.5rem, 1.5vw, 0.72rem);
+    font-weight: 200; letter-spacing: 0.18em; text-transform: uppercase;
+    margin-top: 1.2rem; margin-bottom: 2rem; opacity: 0;
     animation: riseIn 1s var(--ease) 1s forwards;
+    white-space: nowrap;
   }
   .panel-dev .descriptor { color: #6668aa; }
   .panel-cin .descriptor { color: #9a8060; }
 
   .enter-btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    font-family: 'DM Mono', monospace; font-size: 0.58rem;
-    letter-spacing: 0.3em; text-transform: uppercase; text-decoration: none;
-    padding: 0.9rem 2.4rem; border-radius: 100px; opacity: 0;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(0.5rem, 1.5vw, 0.58rem);
+    letter-spacing: 0.28em; text-transform: uppercase; text-decoration: none;
+    padding: 0.8rem 2rem; border-radius: 100px; opacity: 0;
     transform: translateY(10px);
     animation: riseIn 1s var(--ease) 1.2s forwards;
     transition: all 0.4s var(--ease);
+    white-space: nowrap;
   }
   .panel-dev .enter-btn { border: 1px solid #5effa035; color: var(--d-glow); }
-  .panel-dev .enter-btn:hover { background: #5effa012; border-color: #5effa070; gap: 14px; }
+  .panel-dev .enter-btn:hover { background: #5effa012; border-color: #5effa070; gap: 12px; }
   .panel-cin .enter-btn { border: 1px solid #f5c97a35; color: var(--c-glow); }
-  .panel-cin .enter-btn:hover { background: #f5c97a10; border-color: #f5c97a70; gap: 14px; }
+  .panel-cin .enter-btn:hover { background: #f5c97a10; border-color: #f5c97a70; gap: 12px; }
 
   .arrow { display: inline-block; transition: transform 0.4s var(--ease); }
   .enter-btn:hover .arrow { transform: translateX(4px); }
 
   .float-tag {
-    position: absolute; bottom: 2.2rem;
-    font-family: 'DM Mono', monospace; font-size: 0.48rem;
-    letter-spacing: 0.22em; text-transform: uppercase;
+    position: absolute; bottom: 1.6rem;
+    font-family: 'DM Mono', monospace; font-size: 0.42rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
     z-index: 20; opacity: 0;
     animation: fadeIn 1s ease 1.6s forwards;
   }
@@ -115,9 +137,11 @@
   .panel-cin .scan { background: linear-gradient(90deg, transparent, #f5c97a16, transparent); animation: scanMove 13s linear 4s infinite; }
   @keyframes scanMove { 0%{top:-1px;opacity:0} 4%{opacity:1} 96%{opacity:.5} 100%{top:100%;opacity:0} }
 
+  /* ── DESKTOP DIVIDER (vertical) ── */
   .divider {
-    position: absolute; left: 50%; top: 0; bottom: 0;
-    transform: translateX(-50%); width: 1px;
+    position: absolute; left: 0; top: 0; bottom: 0;
+    transform: none; width: 1px;
+    transition: left 0.7s var(--ease-in);
     z-index: 50; pointer-events: none;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
@@ -151,14 +175,61 @@
   }
   @keyframes veilLift { 0%{opacity:1} 100%{opacity:0} }
 
+  /* ════════════════════════════════
+     MOBILE  (≤640px)
+  ════════════════════════════════ */
   @media (max-width: 640px) {
-    .stage { flex-direction: column; }
-    .divider { flex-direction: row; top: 50%; bottom: auto; left: 0; right: 0; width: auto; height: 1px; transform: translateY(-50%); }
-    .div-line { flex: 1; height: 1px; width: auto; background: linear-gradient(to right, transparent, #ffffff14 40%, #ffffff14 60%, transparent); }
-    .div-badge { flex-direction: row; padding: 0 1.5rem; gap: 10px; }
-    .div-sub { display: none; }
-    body { cursor: auto; }
-    #cursor { display: none; }
+    html, body { overflow: hidden; }
+
+    .stage {
+      flex-direction: column;
+    }
+
+    .panel {
+      flex: 1;
+      transition: flex 0.6s var(--ease);
+    }
+
+    /* Tap-to-expand on mobile via JS class */
+    .stage.tap-dev .panel-dev   { flex: 1.22; }
+    .stage.tap-dev .panel-cin   { flex: 0.78; }
+    .stage.tap-cin .panel-cin   { flex: 1.22; }
+    .stage.tap-cin .panel-dev   { flex: 0.78; }
+
+    /* name size */
+    .big-name { font-size: clamp(3rem, 12vw, 4.5rem); }
+
+    /* role tag / descriptor / button — larger touch-friendly */
+    .role-tag { font-size: 0.6rem; letter-spacing: 0.28em; margin-bottom: 1rem; }
+    .descriptor { font-size: 0.58rem; letter-spacing: 0.16em; margin-top: 0.9rem; margin-bottom: 1.6rem; }
+    .enter-btn { font-size: 0.6rem; padding: 0.85rem 2.2rem; letter-spacing: 0.24em; }
+
+    /* float tags hidden on small screens — too cramped */
+    .float-tag { display: none; }
+
+    /* ── MOBILE DIVIDER (horizontal) ── */
+    .divider {
+      left: 0; right: 0; top: 50%; bottom: auto;
+      width: 100%; height: 1px;
+      transform: translateY(-50%);
+      flex-direction: row;
+    }
+    .div-line {
+      flex: 1; width: auto; height: 1px;
+      background: linear-gradient(to right, transparent, #ffffff14 40%, #ffffff14 60%, transparent);
+    }
+    .div-badge {
+      flex-direction: column; padding: 0 1.4rem; gap: 5px;
+    }
+    .div-letter { font-size: 1.4rem; }
+    .div-sub { font-size: 0.34rem; letter-spacing: 0.35em; }
+  }
+
+  /* Very small phones */
+  @media (max-width: 380px) {
+    .big-name { font-size: 2.6rem; }
+    .descriptor { white-space: normal; text-align: center; font-size: 0.52rem; }
+    .enter-btn { padding: 0.75rem 1.8rem; }
   }
 </style>
 </head>
@@ -209,23 +280,65 @@
 </div>
 
 <script>
-  // Cursor
+  /* ── Custom cursor (desktop only) ── */
   const cursor = document.getElementById('cursor');
-  let mx=innerWidth/2, my=innerHeight/2, cx=mx, cy=my;
-  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
-  document.querySelectorAll('a,.panel').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
-  });
-  (function tick(){ cx+=(mx-cx)*0.1; cy+=(my-cy)*0.1; cursor.style.left=cx+'px'; cursor.style.top=cy+'px'; requestAnimationFrame(tick); })();
+  if (cursor && window.matchMedia('(hover: hover)').matches) {
+    let mx=innerWidth/2, my=innerHeight/2, cx=mx, cy=my;
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+    document.querySelectorAll('a,.panel').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+    });
+    (function tick(){ cx+=(mx-cx)*0.1; cy+=(my-cy)*0.1; cursor.style.left=cx+'px'; cursor.style.top=cy+'px'; requestAnimationFrame(tick); })();
+  }
 
-  // Panel hover
+  /* ── Panel interactions ── */
   const stage = document.getElementById('stage');
-  document.getElementById('panelDev').addEventListener('mouseenter', () => { stage.classList.add('hover-dev'); stage.classList.remove('hover-cin'); });
-  document.getElementById('panelCin').addEventListener('mouseenter', () => { stage.classList.add('hover-cin'); stage.classList.remove('hover-dev'); });
-  stage.addEventListener('mouseleave', () => stage.classList.remove('hover-dev','hover-cin'));
+  const devPanel = document.getElementById('panelDev');
+  const cinPanel = document.getElementById('panelCin');
+  const isMobile = () => window.innerWidth <= 640;
+  function updateDivider() {
+  const devWidth = devPanel.getBoundingClientRect().width;
+  divider.style.left = devWidth + "px";
+}
 
-  // Dev canvas — drifting code words
+const divider = document.querySelector('.divider');
+
+/* Run on load */
+updateDivider();
+
+/* Run on resize */
+window.addEventListener('resize', updateDivider);
+
+/* Run continuously during animation */
+function track() {
+  updateDivider();
+  requestAnimationFrame(track);
+}
+track();
+
+  /* Desktop hover */
+  devPanel.addEventListener('mouseenter', () => { if(!isMobile()){ stage.classList.add('hover-dev'); stage.classList.remove('hover-cin'); }});
+  cinPanel.addEventListener('mouseenter', () => { if(!isMobile()){ stage.classList.add('hover-cin'); stage.classList.remove('hover-dev'); }});
+  stage.addEventListener('mouseleave', () => { if(!isMobile()) stage.classList.remove('hover-dev','hover-cin'); });
+
+  /* Mobile tap-to-expand (only on panel bg, not the button) */
+  devPanel.addEventListener('click', e => {
+    if (!isMobile()) return;
+    if (e.target.closest('a')) return;
+    const isActive = stage.classList.contains('tap-dev');
+    stage.classList.remove('tap-dev','tap-cin');
+    if (!isActive) stage.classList.add('tap-dev');
+  });
+  cinPanel.addEventListener('click', e => {
+    if (!isMobile()) return;
+    if (e.target.closest('a')) return;
+    const isActive = stage.classList.contains('tap-cin');
+    stage.classList.remove('tap-dev','tap-cin');
+    if (!isActive) stage.classList.add('tap-cin');
+  });
+
+  /* ── Dev canvas — drifting code words ── */
   (function(){
     const canvas=document.getElementById('cvsDev'), ctx=canvas.getContext('2d');
     const words=['01','{}','()','=> ','const','let','async','fn','import','class','return','if','for','null','true','</>'];
@@ -259,7 +372,7 @@
     (function loop(){ ctx.clearRect(0,0,W,H); P.forEach(p=>{p.update();p.draw();}); ctx.globalAlpha=1; requestAnimationFrame(loop); })();
   })();
 
-  // Cin canvas — bokeh + dust
+  /* ── Cin canvas — bokeh + dust ── */
   (function(){
     const canvas=document.getElementById('cvsCin'), ctx=canvas.getContext('2d');
     let P=[], W, H;
@@ -284,8 +397,7 @@
       draw(){
         ctx.globalAlpha=Math.max(0,this.op);
         const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.rad);
-        g.addColorStop(0,`hsl(${this.hue},78%,70%)`);
-        g.addColorStop(1,'transparent');
+        g.addColorStop(0,`hsl(${this.hue},78%,70%)`); g.addColorStop(1,'transparent');
         ctx.fillStyle=g; ctx.beginPath(); ctx.arc(this.x,this.y,this.rad,0,Math.PI*2); ctx.fill();
       }
     }
