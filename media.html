@@ -1,170 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Zygn Media</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Zygn Media</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    body {
-      height: 100vh;
-      background: #0a0a0a;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Inter', sans-serif;
-      overflow: hidden;
-    }
+:root {
+  --bg: #f5efe6;
+  --text: #1a1a1a;
+  --muted: #7a736b;
+  --accent: #d8c3a5;
+  --line: #ded6cc;
+  --ease: cubic-bezier(0.76, 0, 0.24, 1);
+}
 
-    /* soft animated gradient glow */
-    body::after {
-      content: "";
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.05), transparent 40%);
-      animation: moveGlow 12s linear infinite;
-    }
+body {
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
 
-    @keyframes moveGlow {
-      0% { transform: translate(0,0); }
-      50% { transform: translate(-10%, -10%); }
-      100% { transform: translate(0,0); }
-    }
+/* soft drifting gradient */
+body::after {
+  content: "";
+  position: absolute;
+  width: 180%;
+  height: 180%;
+  background: radial-gradient(circle at 60% 40%, rgba(216,195,165,0.25), transparent 60%);
+  animation: drift 18s ease-in-out infinite;
+}
 
-    /* film grain */
-    body::before {
-      content: "";
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      background: url('https://www.transparenttextures.com/patterns/noise.png');
-      opacity: 0.05;
-      animation: grain 1s steps(8) infinite;
-    }
+@keyframes drift {
+  0%,100% { transform: translate(0,0); }
+  50% { transform: translate(-6%, -8%); }
+}
 
-    @keyframes grain {
-      0%,100% { transform: translate(0,0); }
-      20% { transform: translate(-3%, 2%); }
-      40% { transform: translate(2%, -3%); }
-      60% { transform: translate(-2%, 1%); }
-      80% { transform: translate(1%, -2%); }
-    }
+/* subtle paper grain */
+body::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: url('https://www.transparenttextures.com/patterns/paper.png');
+  opacity: 0.25;
+}
 
-    .container {
-      text-align: center;
-      z-index: 2;
-      max-width: 700px;
-      padding: 20px;
-    }
+/* container */
+.container {
+  text-align: center;
+  z-index: 2;
+  max-width: 720px;
+  padding: 24px;
+}
 
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 3.8rem;
-      letter-spacing: 2px;
-      opacity: 0;
-      transform: translateY(40px);
-      animation: reveal 1.8s ease forwards;
-    }
+/* title */
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 6vw, 4.2rem);
+  font-weight: 400;
+  letter-spacing: 1px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: reveal 1.2s var(--ease) forwards, float 8s ease-in-out infinite 2s;
+}
 
-    h1 span {
-      font-weight: 600;
-    }
+h1 span {
+  font-weight: 600;
+}
 
-    @keyframes reveal {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+/* reveal */
+@keyframes reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    .line {
-      margin: 25px auto;
-      width: 0;
-      height: 1px;
-      background: rgba(255,255,255,0.2);
-      animation: expand 2s ease forwards;
-      animation-delay: 0.8s;
-    }
+/* slow float */
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
 
-    @keyframes expand {
-      to {
-        width: 50%;
-      }
-    }
+/* divider */
+.line {
+  margin: 28px auto;
+  width: 0;
+  height: 1px;
+  background: var(--line);
+  animation: expand 1.5s var(--ease) forwards, soften 5s ease-in-out infinite 2s;
+}
 
-    p {
-      margin-top: 20px;
-      font-size: 1rem;
-      color: #aaa;
-      line-height: 1.7;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: reveal 1.5s ease forwards;
-      animation-delay: 1.2s;
-    }
+@keyframes expand {
+  to { width: 55%; }
+}
 
-    .brand {
-      margin-top: 40px;
-      font-size: 0.9rem;
-      letter-spacing: 3px;
-      color: #777;
-      opacity: 0;
-      animation: fadeIn 2s ease forwards;
-      animation-delay: 2s;
-    }
+@keyframes soften {
+  0%,100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
 
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
+/* text */
+p {
+  margin-top: 18px;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  color: var(--muted);
+  line-height: 1.7;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: reveal 1s var(--ease) forwards 0.6s;
+}
 
-    /* light sweep effect */
-    .sweep {
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(
-        120deg,
-        transparent,
-        rgba(255,255,255,0.08),
-        transparent
-      );
-      animation: sweep 6s infinite;
-    }
+/* brand */
+.brand {
+  margin-top: 36px;
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  color: #8a8178;
+  opacity: 0;
+  animation: fadeIn 1.5s ease forwards 1.2s, breathe 6s ease-in-out infinite 2s;
+}
 
-    @keyframes sweep {
-      0% { left: -100%; }
-      100% { left: 150%; }
-    }
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
 
-  </style>
+/* subtle breathing */
+@keyframes breathe {
+  0%,100% { letter-spacing: 4px; opacity: 0.6; }
+  50% { letter-spacing: 5px; opacity: 1; }
+}
+
+/* light sweep (very soft, not flashy) */
+.sweep {
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 35%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.35),
+    transparent
+  );
+  animation: sweep 10s infinite;
+  opacity: 0.4;
+}
+
+@keyframes sweep {
+  0% { left: -120%; }
+  100% { left: 150%; }
+}
+
+/* mobile tuning */
+@media (max-width: 640px) {
+  .container {
+    padding: 18px;
+  }
+
+  .line {
+    width: 65%;
+  }
+
+  .brand {
+    letter-spacing: 3px;
+  }
+}
+
+@media (max-width: 380px) {
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+}
+</style>
 </head>
 
 <body>
-  <div class="sweep"></div>
 
-  <div class="container">
-    <h1><span>Under</span> Development</h1>
+<div class="sweep"></div>
 
-    <div class="line"></div>
+<div class="container">
+  <h1><span>Under</span><div style="color: brown;">Development</div></h1>
+  <div class="line"></div>
+  <p>
+    A visual portfolio shaped with clarity, elegance, and storytelling.  
+    Currently in progress.
+  </p>
+  <div class="brand">ZYGN MEDIA</div>
+</div>
 
-    <p>
-      A visual portfolio shaped with intent, precision, and storytelling.  
-      Currently in production.
-    </p>
-
-    <div class="brand">SUBASH</div>
-  </div>
 </body>
 </html>
