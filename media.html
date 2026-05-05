@@ -505,7 +505,7 @@
     inset: 0;
     transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
-  .photo-item:hover .photo-bg { transform: scale(1.05); }
+  .photo-item:hover .photo-img { transform: scale(1.05); }
 
   /* different bg tones for each photo box */
   .photo-item:nth-child(1) .photo-bg { background: linear-gradient(160deg, #1a1815, #2a2520); }
@@ -1114,6 +1114,14 @@
   .gear-list { gap: 1.2rem; }
   .gear-divider { display: none; }
 }
+.photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
 </style>
 </head>
 <body>
@@ -1295,7 +1303,7 @@
   <div class="photo-grid reveal" style="transition-delay:0.1s">
     <!-- Big card -->
     <div class="photo-item">
-      <div class="photo-bg"></div>
+      <img src="images/pic2.jpg" class="photo-img" alt="Portrait Photography">
       <div class="photo-overlay"></div>
       <div class="photo-deco">
         <svg width="200" height="300" viewBox="0 0 200 300"><ellipse cx="100" cy="150" rx="80" ry="120" stroke="#b8966e" stroke-width="0.6"/><line x1="100" y1="10" x2="100" y2="290" stroke="#b8966e" stroke-width="0.4"/></svg>
@@ -1316,7 +1324,7 @@
       </div>
     </div>
     <div class="photo-item">
-      <div class="photo-bg"></div>
+      <img src="images/pic2.jpg" class="photo-img" alt="Portrait Photography">
       <div class="photo-overlay"></div>
       <div class="photo-deco"><svg width="120" height="100" viewBox="0 0 120 100"><path d="M10 80 Q60 10 110 80" stroke="#b8966e" stroke-width="0.6" fill="none"/><path d="M10 60 Q60 20 110 60" stroke="#b8966e" stroke-width="0.3" fill="none"/></svg></div>
       <div class="photo-content">
