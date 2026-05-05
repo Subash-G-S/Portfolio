@@ -958,10 +958,34 @@
 .cinema-featured-visual {
   position: relative;
   width: 100%;
-  aspect-ratio: 21/9;
+  aspect-ratio: 22/9.19;
   background: var(--charcoal);
   overflow: hidden;
   cursor: none;
+}
+.cinema-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cinema-featured-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(10,8,6,0.8),
+    rgba(10,8,6,0.2),
+    transparent
+  );
+  z-index: 2;
+}
+.cinema-play-btn,
+.cinema-featured-label,
+.cinema-aspect-ratio {
+  z-index: 3;
 }
 .cinema-featured-deco {
   position: absolute;
@@ -976,6 +1000,35 @@
   z-index: 3;
   transition: transform 0.4s, opacity 0.3s;
   opacity: 0.7;
+}
+.cinema-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* SOUND BUTTON */
+.sound-toggle {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.8rem;
+  z-index: 4;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  color: var(--cream);
+  border: 1px solid rgba(245,242,236,0.3);
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0.2);
+  transition: all 0.3s;
+}
+
+.sound-toggle:hover {
+  border-color: var(--gold);
+  color: var(--gold);
 }
 .cinema-featured-visual:hover .cinema-play-btn {
   transform: translate(-50%, -50%) scale(1.12);
@@ -1428,13 +1481,10 @@
     <!-- Featured Film Card -->
     <div class="cinema-featured reveal" style="transition-delay:0.15s">
       <div class="cinema-featured-visual">
-        <div class="cinema-play-btn">
-          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="30" cy="30" r="29" stroke="#b8966e" stroke-width="0.8"/>
-            <circle cx="30" cy="30" r="22" stroke="#b8966e" stroke-width="0.4" opacity="0.4"/>
-            <polygon points="24,20 44,30 24,40" fill="#b8966e"/>
-          </svg>
-        </div>
+        <video id="cinemaVideo" class="cinema-video" autoplay muted loop playsinline>
+          <source src="videos/graded_jothsna.mp4" type="video/mp4">
+        </video>
+        <div class="sound-toggle" id="soundToggle" onclick="toggleSound(event)">🔇</div>
         <div class="cinema-featured-deco">
           <svg width="100%" height="100%" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
             <defs>
@@ -1459,10 +1509,10 @@
         </div>
         <div class="cinema-featured-label">
           <span class="cinema-featured-tag">Featured Work</span>
-          <h3 class="cinema-featured-title">Echoes of Light</h3>
-          <p class="cinema-featured-sub">Short Documentary · 2024</p>
+          <h3 class="cinema-featured-title">Tulasi</h3>
+          <p class="cinema-featured-sub">Storytelling · 2026</p>
         </div>
-        <div class="cinema-aspect-ratio">2.35 : 1</div>
+        <div class="cinema-aspect-ratio">2.39 : 1</div>
       </div>
     </div>
 
@@ -1643,7 +1693,7 @@
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
   let mx = 0, my = 0, rx = 0, ry = 0;
-
+  
   document.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
     cursor.style.left = mx + 'px';
@@ -1727,6 +1777,19 @@
     const name = document.querySelector('.hero-name');
     if (name) name.style.transform = `translate(${rx * 0.3}px, ${ry * 0.2}px)`;
   });
+  // 🔊 SOUND TOGGLE FUNCTION
+  function toggleSound(e) {
+    e.stopPropagation();
+
+    const video = document.getElementById('cinemaVideo');
+    const btn = document.getElementById('soundToggle');
+
+    video.muted = !video.muted;
+
+    if (!video.paused) video.play();
+
+    btn.textContent = video.muted ? '🔇' : '🔊';
+  }
 </script>
 </body>
 </html>
