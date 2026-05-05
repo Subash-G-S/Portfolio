@@ -881,6 +881,239 @@
     footer { padding: 2rem 1.5rem; }
     .nav-links { display: none; }
   }
+
+/* ── CINEMATOGRAPHY SECTION ── */
+.cinema-section {
+  padding: 9rem 3rem;
+  background: var(--cream);
+  position: relative;
+}
+.cinema-inner { max-width: 1200px; margin: 0 auto; }
+
+.cinema-header { margin-bottom: 4rem; }
+.cinema-header-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: end;
+  margin-top: 1.5rem;
+}
+.cinema-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.cinema-heading em { font-style: italic; color: var(--gold); }
+.cinema-desc {
+  font-size: 0.72rem;
+  line-height: 2.2;
+  color: var(--warm-gray);
+  padding-top: 1rem;
+}
+
+/* Featured card */
+.cinema-featured { margin-bottom: 3rem; }
+.cinema-featured-visual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21/9;
+  background: var(--charcoal);
+  overflow: hidden;
+  cursor: none;
+}
+.cinema-featured-deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.cinema-play-btn {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72px; height: 72px;
+  z-index: 3;
+  transition: transform 0.4s, opacity 0.3s;
+  opacity: 0.7;
+}
+.cinema-featured-visual:hover .cinema-play-btn {
+  transform: translate(-50%, -50%) scale(1.12);
+  opacity: 1;
+}
+.cinema-featured-label {
+  position: absolute;
+  bottom: 2rem; left: 2.5rem;
+  z-index: 4;
+}
+.cinema-featured-tag {
+  display: inline-block;
+  font-size: 0.5rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(184,150,110,0.3);
+  padding: 0.3rem 0.7rem;
+  margin-bottom: 0.8rem;
+}
+.cinema-featured-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.1;
+}
+.cinema-featured-sub {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245,242,236,0.4);
+  margin-top: 0.4rem;
+}
+.cinema-aspect-ratio {
+  position: absolute;
+  top: 1.5rem; right: 2rem;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: rgba(245,242,236,0.2);
+  z-index: 4;
+}
+
+/* Genre cards */
+.cinema-genres {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5px;
+  margin-bottom: 3rem;
+  background: var(--line);
+}
+.cinema-genre-card {
+  background: var(--ivory);
+  padding: 2.2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.4s, transform 0.4s;
+  cursor: none;
+}
+.cinema-genre-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.cinema-genre-card:hover::after { transform: scaleX(1); }
+.cinema-genre-card:hover { background: var(--cream); }
+
+.cgc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+.cgc-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.75rem;
+  color: rgba(184,150,110,0.4);
+  letter-spacing: 0.1em;
+}
+.cgc-icon { width: 36px; height: 36px; opacity: 0.5; transition: opacity 0.3s; }
+.cinema-genre-card:hover .cgc-icon { opacity: 1; }
+
+.cgc-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem;
+  font-weight: 300;
+  color: var(--ink);
+  margin-bottom: 0.8rem;
+  line-height: 1.2;
+}
+.cgc-desc {
+  font-size: 0.6rem;
+  line-height: 2;
+  color: var(--warm-gray);
+  flex: 1;
+}
+.cgc-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+}
+.cgc-specs span {
+  font-size: 0.48rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(184,150,110,0.2);
+  padding: 0.25rem 0.5rem;
+}
+
+/* Gear strip */
+.cinema-gear {
+  border: 1px solid var(--line);
+  padding: 2rem 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  background: var(--ivory);
+}
+.gear-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.gear-list {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.gear-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.gear-name {
+  font-size: 0.62rem;
+  color: var(--ink);
+  letter-spacing: 0.05em;
+}
+.gear-cat {
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+}
+.gear-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--line);
+  flex-shrink: 0;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .cinema-section { padding: 5rem 1.5rem; }
+  .cinema-header-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .cinema-featured-visual { aspect-ratio: 16/9; }
+  .cinema-genres { grid-template-columns: 1fr 1fr; }
+  .cinema-gear { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+  .gear-list { gap: 1.2rem; }
+  .gear-divider { display: none; }
+}
 </style>
 </head>
 <body>
@@ -1118,6 +1351,165 @@
         <div class="photo-genre-sub">Space, form, geometry</div>
       </div>
     </div>
+  </div>
+</section>
+<!-- CINEMATOGRAPHY SECTION -->
+<section class="cinema-section">
+  <div class="cinema-inner">
+
+    <!-- Header -->
+    <div class="cinema-header reveal">
+      <div class="section-label">Motion &amp; Film</div>
+      <div class="cinema-header-grid">
+        <h2 class="cinema-heading">The art of<br><em>moving frames</em></h2>
+        <p class="cinema-desc">Cinematography is photography in time. Every second is a composition, every cut a heartbeat. I craft visual narratives that pull people into a world they can't look away from.</p>
+      </div>
+    </div>
+
+    <!-- Featured Film Card -->
+    <div class="cinema-featured reveal" style="transition-delay:0.15s">
+      <div class="cinema-featured-visual">
+        <div class="cinema-play-btn">
+          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="29" stroke="#b8966e" stroke-width="0.8"/>
+            <circle cx="30" cy="30" r="22" stroke="#b8966e" stroke-width="0.4" opacity="0.4"/>
+            <polygon points="24,20 44,30 24,40" fill="#b8966e"/>
+          </svg>
+        </div>
+        <div class="cinema-featured-deco">
+          <svg width="100%" height="100%" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <radialGradient id="cg" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#b8966e" stop-opacity="0.06"/>
+                <stop offset="100%" stop-color="#0f0e0c" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="800" height="450" fill="url(#cg)"/>
+            <line x1="0" y1="225" x2="800" y2="225" stroke="#b8966e" stroke-width="0.3" opacity="0.15"/>
+            <line x1="400" y1="0" x2="400" y2="450" stroke="#b8966e" stroke-width="0.3" opacity="0.15"/>
+            <rect x="60" y="40" width="680" height="370" stroke="#b8966e" stroke-width="0.5" fill="none" opacity="0.1"/>
+            <rect x="100" y="75" width="600" height="300" stroke="#b8966e" stroke-width="0.3" fill="none" opacity="0.06"/>
+            <!-- Film strip perforations -->
+            <rect x="20" y="40" width="18" height="12" rx="1" stroke="#b8966e" stroke-width="0.4" fill="none" opacity="0.2"/>
+            <rect x="20" y="68" width="18" height="12" rx="1" stroke="#b8966e" stroke-width="0.4" fill="none" opacity="0.2"/>
+            <rect x="20" y="96" width="18" height="12" rx="1" stroke="#b8966e" stroke-width="0.4" fill="none" opacity="0.2"/>
+            <rect x="762" y="40" width="18" height="12" rx="1" stroke="#b8966e" stroke-width="0.4" fill="none" opacity="0.2"/>
+            <rect x="762" y="68" width="18" height="12" rx="1" stroke="#b8966e" stroke-width="0.4" fill="none" opacity="0.2"/>
+            <rect x="762" y="96" width="18" height="12" rx="1" stroke="#b8966e" stroke-width="0.4" fill="none" opacity="0.2"/>
+          </svg>
+        </div>
+        <div class="cinema-featured-label">
+          <span class="cinema-featured-tag">Featured Work</span>
+          <h3 class="cinema-featured-title">Echoes of Light</h3>
+          <p class="cinema-featured-sub">Short Documentary · 2024</p>
+        </div>
+        <div class="cinema-aspect-ratio">2.35 : 1</div>
+      </div>
+    </div>
+
+    <!-- Genre Cards -->
+    <div class="cinema-genres reveal" style="transition-delay:0.1s">
+
+      <div class="cinema-genre-card">
+        <div class="cgc-top">
+          <span class="cgc-num">01</span>
+          <div class="cgc-icon">
+            <svg viewBox="0 0 40 40" fill="none" stroke="#b8966e" stroke-width="0.8">
+              <path d="M5 20 Q20 6 35 20 Q20 34 5 20z"/>
+              <circle cx="20" cy="20" r="5"/>
+            </svg>
+          </div>
+        </div>
+        <h3 class="cgc-title">Wedding Films</h3>
+        <p class="cgc-desc">Cinematic wedding storytelling — from intimate vows to grand receptions, captured in a style that will outlive generations.</p>
+        <div class="cgc-specs">
+          <span>4K · RAW</span>
+          <span>Color Graded</span>
+          <span>Dolby Audio</span>
+        </div>
+      </div>
+
+      <div class="cinema-genre-card">
+        <div class="cgc-top">
+          <span class="cgc-num">02</span>
+          <div class="cgc-icon">
+            <svg viewBox="0 0 40 40" fill="none" stroke="#b8966e" stroke-width="0.8">
+              <rect x="4" y="10" width="24" height="20" rx="1"/>
+              <path d="M28 16l8-4v16l-8-4"/>
+              <line x1="8" y1="16" x2="8" y2="24"/>
+              <line x1="12" y1="14" x2="12" y2="26"/>
+            </svg>
+          </div>
+        </div>
+        <h3 class="cgc-title">Brand Films</h3>
+        <p class="cgc-desc">Commercial narratives that don't feel like ads. Stories that make people feel something about your brand before they ever buy.</p>
+        <div class="cgc-specs">
+          <span>Script to Screen</span>
+          <span>Motion GFX</span>
+          <span>Broadcast Ready</span>
+        </div>
+      </div>
+
+      <div class="cinema-genre-card">
+        <div class="cgc-top">
+          <span class="cgc-num">03</span>
+          <div class="cgc-icon">
+            <svg viewBox="0 0 40 40" fill="none" stroke="#b8966e" stroke-width="0.8">
+              <circle cx="20" cy="20" r="14"/>
+              <line x1="20" y1="6" x2="20" y2="34"/>
+              <path d="M6 20 Q14 14 20 20 Q26 26 34 20"/>
+            </svg>
+          </div>
+        </div>
+        <h3 class="cgc-title">Documentary</h3>
+        <p class="cgc-desc">Real people, real stories. I embed myself in the world of the subject and let truth do the heavy lifting, frame by frame.</p>
+        <div class="cgc-specs">
+          <span>Long-form</span>
+          <span>Interview</span>
+          <span>Observational</span>
+        </div>
+      </div>
+
+      <div class="cinema-genre-card">
+        <div class="cgc-top">
+          <span class="cgc-num">04</span>
+          <div class="cgc-icon">
+            <svg viewBox="0 0 40 40" fill="none" stroke="#b8966e" stroke-width="0.8">
+              <path d="M20 4 L36 36 L4 36 Z"/>
+              <line x1="20" y1="16" x2="20" y2="26"/>
+              <circle cx="20" cy="30" r="1.5" fill="#b8966e"/>
+            </svg>
+          </div>
+        </div>
+        <h3 class="cgc-title">Music Videos</h3>
+        <p class="cgc-desc">Visual extensions of sound — concept-driven music videos that amplify the artist's world and give the song a face it deserves.</p>
+        <div class="cgc-specs">
+          <span>Concept Dev</span>
+          <span>VFX</span>
+          <span>Color Story</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Gear / Tech Strip -->
+    <div class="cinema-gear reveal" style="transition-delay:0.2s">
+      <div class="gear-label">Tools of the craft</div>
+      <div class="gear-list">
+        <div class="gear-item"><span class="gear-name">Sony FX3</span><span class="gear-cat">Cinema Camera</span></div>
+        <div class="gear-divider"></div>
+        <div class="gear-item"><span class="gear-name">DJI RS 3 Pro</span><span class="gear-cat">Gimbal</span></div>
+        <div class="gear-divider"></div>
+        <div class="gear-item"><span class="gear-name">Sigma Art Primes</span><span class="gear-cat">Lenses</span></div>
+        <div class="gear-divider"></div>
+        <div class="gear-item"><span class="gear-name">DaVinci Resolve</span><span class="gear-cat">Color &amp; Edit</span></div>
+        <div class="gear-divider"></div>
+        <div class="gear-item"><span class="gear-name">Adobe Premiere</span><span class="gear-cat">Post Production</span></div>
+        <div class="gear-divider"></div>
+        <div class="gear-item"><span class="gear-name">After Effects</span><span class="gear-cat">Motion Graphics</span></div>
+      </div>
+    </div>
+
   </div>
 </section>
 
