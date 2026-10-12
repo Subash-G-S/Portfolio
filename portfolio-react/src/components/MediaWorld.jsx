@@ -203,15 +203,8 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
           <li><a href="#about">About</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#work">Work</a></li>
-          <li><a href="#cinema">Cinema</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
-
-        <div className="media-nav-actions">
-          <button className="media-switch-dev-btn interactive" onClick={onSwitchToDev} title="Switch to Developer World">
-            <span>DEV WORLD</span> 💻
-          </button>
-        </div>
       </nav>
 
       {/* HERO SECTION */}
