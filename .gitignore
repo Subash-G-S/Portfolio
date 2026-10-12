@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+portfolio-react/node_modules/
+
+# Production build outputs
+dist/
+portfolio-react/dist/
+dist-ssr/
+portfolio-react/dist-ssr/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Editor & System files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.local

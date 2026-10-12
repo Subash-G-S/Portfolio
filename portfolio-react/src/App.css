@@ -1,0 +1,105 @@
+.app-root {
+  min-height: 100vh;
+  position: relative;
+  background: #030308;
+}
+
+.world-view-container {
+  min-height: 100vh;
+  animation: fadeInWorld 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInWorld {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Floating World Switcher HUD */
+.floating-world-hud {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.4rem 0.5rem;
+  background: rgba(10, 10, 15, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  animation: hudPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes hudPop {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.hud-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+.hud-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.hud-btn-accent {
+  background: rgba(245, 201, 122, 0.12);
+  color: var(--cin-gold-bright);
+  border: 1px solid rgba(245, 201, 122, 0.35);
+}
+
+.hud-btn-accent:hover {
+  background: var(--cin-gold);
+  color: #0a0908;
+  font-weight: 600;
+  box-shadow: 0 0 15px rgba(245, 201, 122, 0.3);
+}
+
+.hud-btn-accent-dev {
+  background: rgba(0, 255, 245, 0.1);
+  color: var(--dev-cyan);
+  border: 1px solid rgba(0, 255, 245, 0.35);
+}
+
+.hud-btn-accent-dev:hover {
+  background: var(--dev-cyan);
+  color: #020408;
+  font-weight: 600;
+  box-shadow: 0 0 15px rgba(0, 255, 245, 0.35);
+}
+
+@media (max-width: 640px) {
+  .floating-world-hud {
+    bottom: 1.2rem;
+    right: 50%;
+    transform: translateX(50%);
+  }
+}

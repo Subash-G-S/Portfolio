@@ -1,0 +1,88 @@
+.custom-cursor-container {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: #ffffff;
+  pointer-events: none;
+  will-change: transform;
+  transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  margin-top: -16px;
+  margin-left: -16px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  will-change: transform;
+  transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, background-color 0.25s ease, opacity 0.25s ease;
+}
+
+/* Hover expansion */
+.custom-cursor-container.is-hover .cursor-dot {
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  margin-left: -7px;
+  background: var(--dev-cyan);
+}
+
+.custom-cursor-container.is-hover .cursor-ring {
+  width: 48px;
+  height: 48px;
+  margin-top: -24px;
+  margin-left: -24px;
+  border-color: var(--dev-cyan);
+  background: rgba(0, 255, 245, 0.08);
+}
+
+/* Dev Mode */
+.custom-cursor-container.mode-dev .cursor-dot {
+  background: var(--dev-cyan);
+  box-shadow: 0 0 10px var(--dev-cyan);
+}
+.custom-cursor-container.mode-dev .cursor-ring {
+  border-color: rgba(0, 255, 245, 0.5);
+}
+.custom-cursor-container.mode-dev.is-hover .cursor-dot {
+  background: var(--dev-pink);
+  box-shadow: 0 0 14px var(--dev-pink);
+}
+.custom-cursor-container.mode-dev.is-hover .cursor-ring {
+  border-color: var(--dev-pink);
+  background: rgba(255, 0, 110, 0.1);
+}
+
+/* Media Mode */
+.custom-cursor-container.mode-media .cursor-dot {
+  background: var(--cin-gold-bright);
+  box-shadow: 0 0 10px rgba(245, 201, 122, 0.6);
+}
+.custom-cursor-container.mode-media .cursor-ring {
+  border-color: rgba(184, 150, 110, 0.4);
+}
+.custom-cursor-container.mode-media.is-hover .cursor-dot {
+  background: #ffffff;
+}
+.custom-cursor-container.mode-media.is-hover .cursor-ring {
+  border-color: var(--cin-gold-bright);
+  background: rgba(184, 150, 110, 0.15);
+}

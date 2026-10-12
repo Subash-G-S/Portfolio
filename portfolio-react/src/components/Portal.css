@@ -1,0 +1,426 @@
+.portal-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #030308;
+}
+
+/* Veil animation on initial mount */
+.veil {
+  position: fixed;
+  inset: 0;
+  background: #030308;
+  z-index: 500;
+  pointer-events: none;
+  animation: veilLift 1.1s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+@keyframes veilLift {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── STAGE ── */
+.stage {
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── PANELS ── */
+.panel {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  transition: flex 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: flex;
+  user-select: none;
+}
+
+.panel-dev {
+  background: #060610;
+}
+
+.panel-cin {
+  background: #0c0805;
+}
+
+/* Desktop hover expand - 60fps hardware flex transitions */
+@media (hover: hover) {
+  .stage.hover-dev .panel-dev {
+    flex: 1.18;
+  }
+  .stage.hover-dev .panel-cin {
+    flex: 0.82;
+  }
+  .stage.hover-cin .panel-cin {
+    flex: 1.18;
+  }
+  .stage.hover-cin .panel-dev {
+    flex: 0.82;
+  }
+}
+
+.panel-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── CONTENT ── */
+.content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem;
+}
+
+.role-tag {
+  font-family: var(--font-mono);
+  font-size: clamp(0.5rem, 1.2vw, 0.62rem);
+  font-weight: 300;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: portalRiseIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  white-space: nowrap;
+}
+
+.panel-dev .role-tag {
+  color: var(--dev-glow);
+  text-shadow: 0 0 10px rgba(94, 255, 160, 0.3);
+}
+
+.panel-cin .role-tag {
+  color: var(--cin-gold-bright);
+  text-shadow: 0 0 10px rgba(245, 201, 122, 0.3);
+}
+
+.big-name {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(4.2rem, 9vw, 8.5rem);
+  white-space: nowrap;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: portalRiseIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+.panel-dev .big-name {
+  color: #dde0f5;
+}
+
+.panel-cin .big-name {
+  color: #f0e0c0;
+}
+
+.big-name em {
+  font-style: italic;
+  display: inline;
+}
+
+.panel-dev .big-name em {
+  color: var(--dev-glow);
+}
+
+.panel-cin .big-name em {
+  color: var(--cin-gold-bright);
+}
+
+.descriptor {
+  font-family: var(--font-sans);
+  font-size: clamp(0.55rem, 1.3vw, 0.78rem);
+  font-weight: 200;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-top: 1.2rem;
+  margin-bottom: 2.2rem;
+  opacity: 0;
+  animation: portalRiseIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+  white-space: nowrap;
+}
+
+.panel-dev .descriptor {
+  color: #7b7ebd;
+}
+
+.panel-cin .descriptor {
+  color: #b39975;
+}
+
+.enter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: clamp(0.52rem, 1.2vw, 0.65rem);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  background: transparent;
+  padding: 0.9rem 2.2rem;
+  border-radius: 100px;
+  opacity: 0;
+  animation: portalRiseIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.panel-dev .enter-btn {
+  border: 1px solid rgba(94, 255, 160, 0.28);
+  color: var(--dev-glow);
+}
+
+.panel-dev .enter-btn:hover {
+  background: rgba(94, 255, 160, 0.12);
+  border-color: rgba(94, 255, 160, 0.8);
+  box-shadow: 0 0 25px rgba(94, 255, 160, 0.25);
+  gap: 14px;
+}
+
+.panel-cin .enter-btn {
+  border: 1px solid rgba(245, 201, 122, 0.28);
+  color: var(--cin-gold-bright);
+}
+
+.panel-cin .enter-btn:hover {
+  background: rgba(245, 201, 122, 0.12);
+  border-color: rgba(245, 201, 122, 0.8);
+  box-shadow: 0 0 25px rgba(245, 201, 122, 0.22);
+  gap: 14px;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.enter-btn:hover .arrow {
+  transform: translateX(4px);
+}
+
+.float-tag {
+  position: absolute;
+  bottom: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.45rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  z-index: 20;
+  opacity: 0;
+  animation: portalFadeIn 1s ease 0.8s forwards;
+}
+
+.panel-dev .float-tag {
+  color: rgba(94, 255, 160, 0.3);
+}
+
+.panel-cin .float-tag {
+  color: rgba(245, 201, 122, 0.3);
+}
+
+.spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.panel:hover .spotlight {
+  opacity: 1;
+}
+
+.panel-dev .spotlight {
+  background: radial-gradient(ellipse 65% 60% at 50% 65%, rgba(94, 255, 160, 0.08), transparent 80%);
+}
+
+.panel-cin .spotlight {
+  background: radial-gradient(ellipse 65% 60% at 50% 35%, rgba(245, 201, 122, 0.08), transparent 80%);
+}
+
+.scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+}
+
+.panel-dev .scan {
+  background: linear-gradient(90deg, transparent, rgba(94, 255, 160, 0.2), transparent);
+  animation: scanMove 9s linear 1.5s infinite;
+}
+
+.panel-cin .scan {
+  background: linear-gradient(90deg, transparent, rgba(245, 201, 122, 0.18), transparent);
+  animation: scanMove 12s linear 2.5s infinite;
+}
+
+@keyframes scanMove {
+  0% { top: -1px; opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 0.6; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* ── DIVIDER SEAM (Placed in flex flow between panels) ── */
+.divider {
+  position: relative;
+  width: 0;
+  height: 100%;
+  z-index: 40;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.div-line {
+  flex: 1;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.15) 30%, rgba(255, 255, 255, 0.15) 70%, transparent);
+  opacity: 0;
+  animation: portalFadeIn 1.2s ease 0.6s forwards;
+}
+
+.div-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 2rem 1rem;
+  opacity: 0;
+  animation: portalFadeIn 1s ease 0.5s forwards;
+  background: #030308;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  transform: scale(0.95);
+}
+
+.div-letter {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1;
+}
+
+.div-sub {
+  font-family: var(--font-mono);
+  font-size: 0.38rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+}
+
+@keyframes portalRiseIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes portalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ════════════════════════════════
+   MOBILE RESPONSIVENESS (≤ 768px)
+════════════════════════════════ */
+@media (max-width: 768px) {
+  .stage {
+    flex-direction: column;
+  }
+
+  .panel {
+    flex: 1;
+    transition: flex 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  .stage.tap-dev .panel-dev {
+    flex: 1.35;
+  }
+  .stage.tap-dev .panel-cin {
+    flex: 0.65;
+  }
+  .stage.tap-cin .panel-cin {
+    flex: 1.35;
+  }
+  .stage.tap-cin .panel-dev {
+    flex: 0.65;
+  }
+
+  .big-name {
+    font-size: clamp(3rem, 13vw, 4.8rem);
+  }
+
+  .role-tag {
+    font-size: 0.58rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .descriptor {
+    font-size: 0.55rem;
+    margin-top: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .enter-btn {
+    font-size: 0.58rem;
+    padding: 0.8rem 2rem;
+  }
+
+  .float-tag {
+    display: none;
+  }
+
+  .divider {
+    width: 100%;
+    height: 0;
+    flex-direction: row;
+  }
+
+  .div-line {
+    flex: 1;
+    width: auto;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15) 30%, rgba(255, 255, 255, 0.15) 70%, transparent);
+  }
+
+  .div-badge {
+    padding: 0.5rem 1.2rem;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .div-letter {
+    font-size: 1.2rem;
+  }
+  .div-sub {
+    font-size: 0.32rem;
+  }
+}
