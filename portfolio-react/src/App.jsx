@@ -43,36 +43,6 @@ export default function App() {
       {/* GPU Smooth Custom Cursor */}
       <CustomCursor mode={currentWorld} />
 
-      {/* Floating World Switcher HUD */}
-      {currentWorld !== 'portal' && (
-        <aside className="floating-world-hud" aria-label="World Navigation">
-          <button
-            className="hud-btn interactive"
-            onClick={() => switchWorld('portal')}
-            title="Return to Dual Worlds Portal"
-          >
-            <span>PORTAL</span> ✦
-          </button>
-          {currentWorld === 'dev' ? (
-            <button
-              className="hud-btn hud-btn-accent interactive"
-              onClick={() => switchWorld('media')}
-              title="Switch to Cinema & Photography"
-            >
-              <span>CINEMA</span> 🎬
-            </button>
-          ) : (
-            <button
-              className="hud-btn hud-btn-accent-dev interactive"
-              onClick={() => switchWorld('dev')}
-              title="Switch to Developer Experience"
-            >
-              <span>DEV</span> 💻
-            </button>
-          )}
-        </aside>
-      )}
-
       {/* Main View Transition */}
       <main className="world-view-container">
         {currentWorld === 'portal' && (
