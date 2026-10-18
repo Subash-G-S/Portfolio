@@ -6,7 +6,7 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
-  const [videoQuality, setVideoQuality] = useState('4k'); // '4k' (40mb.mp4) | 'hd' (10mb.mp4)
+  const [videoQuality, setVideoQuality] = useState('hd'); // 'hd' (10mb.mp4) on load for fast page render | '4k' on demand
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [showControls, setShowControls] = useState(true);
 
@@ -220,20 +220,53 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
     resetControlsTimeout();
   };
 
+  const scrollToSection = (e, id) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      const navOffset = 75;
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({
+        top: elementPosition - navOffset,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="media-world-container">
       {/* Editorial Navigation */}
       <nav className="media-nav">
-        <div className="media-brand interactive" onClick={onBackToPortal}>
+        <div className="media-brand interactive" onClick={scrollToTop}>
           Sub<em>ash</em>
           <span className="media-brand-tag">CINEMA &amp; STILLS</span>
         </div>
 
         <ul className="media-nav-links">
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#work">Work</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li>
+            <a href="#about" className="interactive" onClick={(e) => scrollToSection(e, 'about')}>
+              About
+            </a>
+          </li>
+          <li>
+            <a href="#services" className="interactive" onClick={(e) => scrollToSection(e, 'services')}>
+              Services
+            </a>
+          </li>
+          <li>
+            <a href="#work" className="interactive" onClick={(e) => scrollToSection(e, 'work')}>
+              Work
+            </a>
+          </li>
+          <li>
+            <a href="#contact" className="interactive" onClick={(e) => scrollToSection(e, 'contact')}>
+              Contact
+            </a>
+          </li>
         </ul>
       </nav>
 
@@ -249,12 +282,20 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
             Designer &nbsp;·&nbsp; Video Editor
           </p>
           <div className="media-hero-ctas">
-            <a href="#work" className="media-btn media-btn-primary interactive">
+            <a
+              href="#work"
+              className="media-btn media-btn-primary interactive"
+              onClick={(e) => scrollToSection(e, 'work')}
+            >
               View Portfolio
             </a>
-            <button className="media-btn media-btn-outline interactive" onClick={onBackToPortal}>
-              Switch Worlds ⇄
-            </button>
+            <a
+              href="#contact"
+              className="media-btn media-btn-outline interactive"
+              onClick={(e) => scrollToSection(e, 'contact')}
+            >
+              Get In Touch
+            </a>
           </div>
         </div>
 
@@ -503,7 +544,7 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
             />
 
             {/* Cinematic Overlay Layer with Auto-Fade */}
@@ -759,11 +800,15 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
           <a href="mailto:subashgopi2006@gmail.com" className="media-btn media-btn-primary interactive">
             Get In Touch
           </a>
-          <a href="#work" className="media-btn media-btn-outline interactive">
+          <a
+            href="#work"
+            className="media-btn media-btn-outline interactive"
+            onClick={(e) => scrollToSection(e, 'work')}
+          >
             See My Work
           </a>
-          <button className="media-btn media-btn-outline interactive" onClick={onBackToPortal}>
-            Back To Portal
+          <button className="media-btn media-btn-outline interactive" onClick={scrollToTop}>
+            Back To Top ↑
           </button>
         </div>
       </section>

@@ -194,6 +194,23 @@ export default function DevWorld({ onBackToPortal, onSwitchToMedia }) {
     }
   ];
 
+  const scrollToSection = (e, id) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      const navOffset = 75;
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({
+        top: elementPosition - navOffset,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="dev-world-container">
       {/* Background Cyber Grid & Scanline */}
@@ -203,15 +220,15 @@ export default function DevWorld({ onBackToPortal, onSwitchToMedia }) {
 
       {/* Cyberpunk Navigation */}
       <nav className="dev-nav">
-        <div className="dev-nav-brand interactive" onClick={onBackToPortal}>
+        <div className="dev-nav-brand interactive" onClick={scrollToTop}>
           SUBASH<span>.</span>G.S <span className="dev-nav-sub">// DEV</span>
         </div>
 
         <div className="dev-nav-links">
-          <a href="#about">ABOUT</a>
-          <a href="#projects">PROJECTS</a>
-          <a href="#skills">SKILLS</a>
-          <a href="#contact">CONTACT</a>
+          <a href="#about" className="interactive" onClick={(e) => scrollToSection(e, 'about')}>ABOUT</a>
+          <a href="#projects" className="interactive" onClick={(e) => scrollToSection(e, 'projects')}>PROJECTS</a>
+          <a href="#skills" className="interactive" onClick={(e) => scrollToSection(e, 'skills')}>SKILLS</a>
+          <a href="#contact" className="interactive" onClick={(e) => scrollToSection(e, 'contact')}>CONTACT</a>
         </div>
 
         <div className="dev-nav-actions">

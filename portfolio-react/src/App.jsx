@@ -20,9 +20,15 @@ export default function App() {
   useEffect(() => {
     const onHashChange = () => {
       const hash = window.location.hash.toLowerCase();
-      if (hash === '#/dev' || hash === '#dev') setCurrentWorld('dev');
-      else if (hash === '#/media' || hash === '#media') setCurrentWorld('media');
-      else setCurrentWorld('portal');
+      if (hash.startsWith('#/dev') || hash === '#dev') {
+        setCurrentWorld('dev');
+      } else if (hash.startsWith('#/media') || hash === '#media') {
+        setCurrentWorld('media');
+      } else if (hash === '#/' || hash === '#portal' || hash === '') {
+        setCurrentWorld('portal');
+      }
+      // Note: If hash is a section anchor (#about, #services, #work, #contact, etc.),
+      // preserve current world and do not switch!
     };
 
     window.addEventListener('hashchange', onHashChange);

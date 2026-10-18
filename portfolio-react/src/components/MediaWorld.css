@@ -280,6 +280,15 @@
 }
 
 /* ── ABOUT ── */
+.media-about,
+.media-services,
+.media-work,
+.media-cinema,
+.media-process,
+.media-cta {
+  scroll-margin-top: 80px;
+}
+
 .media-about {
   padding: 7rem 8vw;
   background-color: rgb(255, 249, 239);
@@ -1397,10 +1406,23 @@
 ════════════════════════════════ */
 @media (max-width: 768px) {
   .media-nav {
-    padding: 1rem 1.5rem;
+    padding: 0.85rem 1.25rem;
+    gap: 0.5rem;
+  }
+  .media-brand {
+    font-size: 1.35rem;
+  }
+  .media-brand-tag {
+    display: none;
   }
   .media-nav-links {
-    display: none;
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+  }
+  .media-nav-links a {
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
   }
   .media-hero {
     grid-template-columns: 1fr;
