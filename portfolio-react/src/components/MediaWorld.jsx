@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import './MediaWorld.css';
 
 export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
@@ -8,32 +9,28 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
   const [isMuted, setIsMuted] = useState(true);
   const [videoQuality, setVideoQuality] = useState('hd'); // 'hd' (10mb.mp4) on load for fast page render | '4k' on demand
   const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const [showControls, setShowControls] = useState(true);
 
   const videoRef = useRef(null);
-  const controlsTimeoutRef = useRef(null);
 
-  const resetControlsTimeout = () => {
-    setShowControls(true);
-    if (controlsTimeoutRef.current) {
-      clearTimeout(controlsTimeoutRef.current);
-    }
-    // Only auto-hide if currently playing
-    if (isPlaying) {
-      controlsTimeoutRef.current = setTimeout(() => {
-        setShowControls(false);
-      }, 2500);
-    }
-  };
-
+  // Lock body scroll and enable ESC key to close lightbox
   useEffect(() => {
-    resetControlsTimeout();
-    return () => {
-      if (controlsTimeoutRef.current) {
-        clearTimeout(controlsTimeoutRef.current);
-      }
-    };
-  }, [isPlaying]);
+    if (selectedPhoto) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+          setSelectedPhoto(null);
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [selectedPhoto]);
 
   const testimonials = [
     {
@@ -217,7 +214,6 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
   const handleVideoClick = (e) => {
     if (e.target.closest('.media-video-controls') || e.target.closest('.media-center-play-disc')) return;
     togglePlay();
-    resetControlsTimeout();
   };
 
   const scrollToSection = (e, id) => {
@@ -527,13 +523,7 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
         {/* Featured Film Card with Custom Controls */}
         <div className="media-cinema-featured">
           <div
-            className={`media-cinema-visual ${showControls ? 'controls-visible' : 'controls-hidden'}`}
-            onMouseMove={resetControlsTimeout}
-            onMouseEnter={resetControlsTimeout}
-            onMouseLeave={() => {
-              if (isPlaying) setShowControls(false);
-            }}
-            onTouchStart={resetControlsTimeout}
+            className="media-cinema-visual"
             onClick={handleVideoClick}
           >
             <video
@@ -825,21 +815,27 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
         </div>
       </footer>
 
-      {/* LIGHTBOX MODAL */}
-      {selectedPhoto && (
-        <div className="media-lightbox" onClick={() => setSelectedPhoto(null)}>
-          <div className="media-lightbox-content" onClick={e => e.stopPropagation()}>
-            <button className="media-lightbox-close interactive" onClick={() => setSelectedPhoto(null)}>
+      {/* LIGHTBOX MODAL (Rendered directly to document.body for true viewport centering) */}
+      {selectedPhoto &&
+        createPortal(
+          <div className="media-lightbox" onClick={() => setSelectedPhoto(null)}>
+            <button
+              className="media-lightbox-close interactive"
+              onClick={() => setSelectedPhoto(null)}
+              aria-label="Close preview"
+            >
               ✕
             </button>
-            <img src={selectedPhoto.src} alt={selectedPhoto.title} className="media-lightbox-img" />
-            <div className="media-lightbox-caption">
-              <h3>{selectedPhoto.title}</h3>
-              <p>{selectedPhoto.sub}</p>
+            <div className="media-lightbox-content" onClick={(e) => e.stopPropagation()}>
+              <img src={selectedPhoto.src} alt={selectedPhoto.title} className="media-lightbox-img" />
+              <div className="media-lightbox-caption">
+                <h3>{selectedPhoto.title}</h3>
+                <p>{selectedPhoto.sub}</p>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

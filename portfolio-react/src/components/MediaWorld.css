@@ -847,7 +847,7 @@
   display: block;
 }
 
-/* ── Cinematic Overlay Layer with Auto-Fade ── */
+/* ── Cinematic Overlay Layer (Permanently Visible) ── */
 .media-cinema-overlay {
   position: absolute;
   inset: 0;
@@ -864,17 +864,6 @@
   );
   opacity: 1;
   pointer-events: none;
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s;
-}
-
-/* Auto-Fade: Hidden state when playing */
-.media-cinema-visual.controls-hidden .media-cinema-overlay {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.media-cinema-visual.controls-hidden .media-film-perforations {
-  opacity: 0.15;
 }
 
 /* Top bar: live badge on left, sleek glass pill controls on right */
@@ -1341,48 +1330,80 @@
 /* ── LIGHTBOX ── */
 .media-lightbox {
   position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(5, 5, 5, 0.92);
-  backdrop-filter: blur(10px);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 999999;
+  background: rgba(5, 5, 5, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 1.5rem;
+  animation: lightboxFade 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes lightboxFade {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .media-lightbox-content {
   position: relative;
-  max-width: 90vw;
-  max-height: 90vh;
+  max-width: 92vw;
+  max-height: 88vh;
+  max-height: 88dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .media-lightbox-close {
-  position: absolute;
-  top: -45px;
-  right: 0;
-  background: transparent;
-  border: none;
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 1000000;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(20, 18, 16, 0.85);
+  border: 1px solid rgba(184, 150, 110, 0.4);
   color: #fff;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
 }
 
 .media-lightbox-close:hover {
-  transform: scale(1.2);
-  color: var(--cin-gold-bright);
+  transform: scale(1.1);
+  background: var(--cin-gold);
+  color: #0a0908;
+  border-color: var(--cin-gold);
 }
 
 .media-lightbox-img {
   max-width: 100%;
-  max-height: 75vh;
+  max-height: 74vh;
+  max-height: 74dvh;
   object-fit: contain;
-  border-radius: 4px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  border-radius: 6px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(184, 150, 110, 0.15);
 }
 
 .media-lightbox-caption {
@@ -1392,13 +1413,15 @@
 
 .media-lightbox-caption h3 {
   font-family: var(--font-serif);
-  font-size: 1.4rem;
+  font-size: clamp(1.1rem, 3.5vw, 1.5rem);
   color: #fff;
+  line-height: 1.2;
 }
 
 .media-lightbox-caption p {
-  font-size: 0.9rem;
+  font-size: clamp(0.75rem, 2.5vw, 0.9rem);
   color: var(--cin-gold-bright);
+  margin-top: 0.25rem;
 }
 
 /* ════════════════════════════════
@@ -1497,6 +1520,21 @@
   .media-center-play-disc {
     width: 48px;
     height: 48px;
+  }
+  .media-lightbox {
+    padding: 0.8rem;
+  }
+  .media-lightbox-close {
+    top: 0.85rem;
+    right: 0.85rem;
+    width: 38px;
+    height: 38px;
+    font-size: 1.05rem;
+  }
+  .media-lightbox-img {
+    max-height: 68vh;
+    max-height: 68dvh;
+    border-radius: 4px;
   }
   .media-footer {
     flex-direction: column;
