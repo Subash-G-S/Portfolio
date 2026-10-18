@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './MediaWorld.css';
 
 export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
@@ -8,8 +8,32 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
   const [isMuted, setIsMuted] = useState(true);
   const [videoQuality, setVideoQuality] = useState('4k'); // '4k' (40mb.mp4) | 'hd' (10mb.mp4)
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [showControls, setShowControls] = useState(true);
 
   const videoRef = useRef(null);
+  const controlsTimeoutRef = useRef(null);
+
+  const resetControlsTimeout = () => {
+    setShowControls(true);
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+    }
+    // Only auto-hide if currently playing
+    if (isPlaying) {
+      controlsTimeoutRef.current = setTimeout(() => {
+        setShowControls(false);
+      }, 2500);
+    }
+  };
+
+  useEffect(() => {
+    resetControlsTimeout();
+    return () => {
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
+    };
+  }, [isPlaying]);
 
   const testimonials = [
     {
@@ -188,6 +212,12 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
         }
       }
     }
+  };
+
+  const handleVideoClick = (e) => {
+    if (e.target.closest('.media-video-controls') || e.target.closest('.media-center-play-disc')) return;
+    togglePlay();
+    resetControlsTimeout();
   };
 
   return (
@@ -455,7 +485,16 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
 
         {/* Featured Film Card with Custom Controls */}
         <div className="media-cinema-featured">
-          <div className="media-cinema-visual">
+          <div
+            className={`media-cinema-visual ${showControls ? 'controls-visible' : 'controls-hidden'}`}
+            onMouseMove={resetControlsTimeout}
+            onMouseEnter={resetControlsTimeout}
+            onMouseLeave={() => {
+              if (isPlaying) setShowControls(false);
+            }}
+            onTouchStart={resetControlsTimeout}
+            onClick={handleVideoClick}
+          >
             <video
               ref={videoRef}
               className="media-cinema-video"
@@ -467,47 +506,111 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
               preload="auto"
             />
 
-            {/* Video Controls Overlay */}
-            <div className="media-video-controls">
-              {/* Quality Switcher */}
-              <div className="media-quality-group">
-                <button
-                  className={`media-quality-btn interactive ${videoQuality === '4k' ? 'active' : ''}`}
-                  onClick={() => handleQualityChange('4k')}
-                  title="Switch to 4K / 1080p Ultra HD Master"
-                >
-                  1080p
-                </button>
-                <button
-                  className={`media-quality-btn interactive ${videoQuality === 'hd' ? 'active' : ''}`}
-                  onClick={() => handleQualityChange('hd')}
-                  title="Switch to Standard HD"
-                >
-                  HD
-                </button>
+            {/* Cinematic Overlay Layer with Auto-Fade */}
+            <div className="media-cinema-overlay">
+              {/* Top Bar */}
+              <div className="media-cinema-top-bar">
+                <div className="media-cinema-badge">
+                  <span className="cinema-live-dot" />
+                  <span>CINEMATIC PREVIEW</span>
+                </div>
+
+                <div className="media-video-controls" onClick={(e) => e.stopPropagation()}>
+                  {/* Quality Switcher */}
+                  <div className="media-quality-group">
+                    <button
+                      className={`media-quality-btn interactive ${videoQuality === '4k' ? 'active' : ''}`}
+                      onClick={() => handleQualityChange('4k')}
+                      title="Switch to 4K Ultra HD"
+                    >
+                      4K
+                    </button>
+                    <button
+                      className={`media-quality-btn interactive ${videoQuality === 'hd' ? 'active' : ''}`}
+                      onClick={() => handleQualityChange('hd')}
+                      title="Switch to Standard HD"
+                    >
+                      HD
+                    </button>
+                  </div>
+
+                  {/* Play / Pause Button */}
+                  <button
+                    className="media-video-btn interactive"
+                    onClick={togglePlay}
+                    title={isPlaying ? 'Pause Film' : 'Play Film'}
+                  >
+                    {isPlaying ? (
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                        <rect x="5" y="4" width="4" height="16" rx="1" />
+                        <rect x="15" y="4" width="4" height="16" rx="1" />
+                      </svg>
+                    ) : (
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="6 4 20 12 6 20 6 4" />
+                      </svg>
+                    )}
+                    <span className="media-btn-text">{isPlaying ? 'PAUSE' : 'PLAY'}</span>
+                  </button>
+
+                  {/* Mute / Audio Button */}
+                  <button
+                    className="media-video-btn interactive"
+                    onClick={toggleSound}
+                    title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
+                  >
+                    {isMuted ? (
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" />
+                        <line x1="23" y1="9" x2="17" y2="15" />
+                        <line x1="17" y1="9" x2="23" y2="15" />
+                      </svg>
+                    ) : (
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" />
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                      </svg>
+                    )}
+                    <span className="media-btn-text">{isMuted ? 'MUTED' : 'AUDIO'}</span>
+                  </button>
+
+                  {/* Theater Fullscreen Button */}
+                  <button
+                    className="media-video-btn interactive"
+                    onClick={toggleFullscreen}
+                    title="Fullscreen Theater Mode"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+                    </svg>
+                    <span className="media-btn-text">THEATER</span>
+                  </button>
+                </div>
               </div>
 
-              <button
-                className="media-video-btn interactive"
-                onClick={togglePlay}
-                title={isPlaying ? 'Pause' : 'Play'}
-              >
-                {isPlaying ? '⏸ PAUSE' : '▶ PLAY'}
-              </button>
-              <button
-                className="media-video-btn interactive"
-                onClick={toggleSound}
-                title={isMuted ? 'Unmute' : 'Mute'}
-              >
-                {isMuted ? '🔇 MUTED' : '🔊 AUDIO ON'}
-              </button>
-              <button
-                className="media-video-btn interactive"
-                onClick={toggleFullscreen}
-                title="Fullscreen Theater Mode"
-              >
-                ⛶ THEATER
-              </button>
+              {/* Center Play Indicator when paused */}
+              {!isPlaying && (
+                <div className="media-cinema-center-indicator">
+                  <div className="media-center-play-disc interactive" onClick={togglePlay}>
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="8 5 19 12 8 19 8 5" />
+                    </svg>
+                  </div>
+                </div>
+              )}
+
+              {/* Bottom Metadata Bar */}
+              <div className="media-cinema-bottom-bar">
+                <div className="media-cinema-featured-label">
+                  <span className="media-featured-tag">Featured Film</span>
+                  <h3 className="media-featured-title">Tulasi</h3>
+                  <p className="media-featured-sub">Storytelling · 2026</p>
+                </div>
+
+                <div className="media-aspect-ratio">
+                  2.39 : 1 ANAMORPHIC · {videoQuality === '4k' ? '4K / 1080p MASTER' : '720p HD'}
+                </div>
+              </div>
             </div>
 
             {/* Film Perforations Border Graphics */}
@@ -522,16 +625,6 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
                   <div key={i} className="sprocket-hole" />
                 ))}
               </div>
-            </div>
-
-            <div className="media-cinema-featured-label">
-              <span className="media-featured-tag">Featured Film</span>
-              <h3 className="media-featured-title">Tulasi</h3>
-              <p className="media-featured-sub">Storytelling · 2026</p>
-            </div>
-
-            <div className="media-aspect-ratio">
-              2.39 : 1 ANAMORPHIC · {videoQuality === '4k' ? '4K / 1080p MASTER' : '720p HD'}
             </div>
           </div>
         </div>
