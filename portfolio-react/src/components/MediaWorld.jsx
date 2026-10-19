@@ -9,8 +9,100 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
   const [isMuted, setIsMuted] = useState(true);
   const [videoQuality, setVideoQuality] = useState('hd'); // 'hd' (10mb.mp4) on load for fast page render | '4k' on demand
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [bgAudioPlaying, setBgAudioPlaying] = useState(false);
 
   const videoRef = useRef(null);
+  const bgAudioRef = useRef(null);
+  const isNearVideoRef = useRef(false);
+
+  // Background Audio Autoplay when MediaWorld opens
+  useEffect(() => {
+    const audio = new Audio('/audio.MP3');
+    audio.loop = true;
+    audio.volume = 1.0;
+    bgAudioRef.current = audio;
+
+    const startAudio = () => {
+      if (!isNearVideoRef.current && audio.paused) {
+        audio.play().then(() => setBgAudioPlaying(true)).catch(() => {});
+      }
+    };
+
+    // Try autoplay immediately (will work if user clicked from Portal)
+    startAudio();
+
+    // In case browser policy blocked autoplay on direct load, play on first user interaction
+    const onUserGesture = () => {
+      startAudio();
+      window.removeEventListener('click', onUserGesture);
+      window.removeEventListener('scroll', onUserGesture);
+      window.removeEventListener('touchstart', onUserGesture);
+      window.removeEventListener('keydown', onUserGesture);
+    };
+
+    window.addEventListener('click', onUserGesture);
+    window.addEventListener('scroll', onUserGesture);
+    window.addEventListener('touchstart', onUserGesture);
+    window.addEventListener('keydown', onUserGesture);
+
+    return () => {
+      window.removeEventListener('click', onUserGesture);
+      window.removeEventListener('scroll', onUserGesture);
+      window.removeEventListener('touchstart', onUserGesture);
+      window.removeEventListener('keydown', onUserGesture);
+      audio.pause();
+      audio.src = '';
+    };
+  }, []);
+
+  // IntersectionObserver: When user scrolls near video, stop music and unmute video
+  useEffect(() => {
+    const target = videoRef.current;
+    if (!target) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const isNear = entry.isIntersecting;
+          isNearVideoRef.current = isNear;
+
+          if (isNear) {
+            // 1. Stop background music
+            if (bgAudioRef.current && !bgAudioRef.current.paused) {
+              bgAudioRef.current.pause();
+              setBgAudioPlaying(false);
+            }
+            // 2. Unmute video sound and ensure it is playing
+            if (videoRef.current) {
+              videoRef.current.muted = false;
+              videoRef.current.volume = 1.0;
+              setIsMuted(false);
+              if (videoRef.current.paused) {
+                videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+              }
+            }
+          } else {
+            // 1. Mute video again when scrolling away
+            if (videoRef.current && !videoRef.current.muted) {
+              videoRef.current.muted = true;
+              setIsMuted(true);
+            }
+            // 2. Resume background music
+            if (bgAudioRef.current && bgAudioRef.current.paused) {
+              bgAudioRef.current.play().then(() => setBgAudioPlaying(true)).catch(() => {});
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.25,
+        rootMargin: '60px 0px 60px 0px'
+      }
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
 
   // Lock body scroll and enable ESC key to close lightbox
   useEffect(() => {
@@ -168,7 +260,35 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
     if (videoRef.current) {
       const nextMuted = !videoRef.current.muted;
       videoRef.current.muted = nextMuted;
+      videoRef.current.volume = 1.0;
       setIsMuted(nextMuted);
+
+      // If user explicitly unmuted the video, pause the background audio
+      if (!nextMuted) {
+        if (bgAudioRef.current && !bgAudioRef.current.paused) {
+          bgAudioRef.current.pause();
+          setBgAudioPlaying(false);
+        }
+      } else {
+        // If user muted the video and is not near the video, resume background audio
+        if (bgAudioRef.current && bgAudioRef.current.paused && !isNearVideoRef.current) {
+          bgAudioRef.current.play().then(() => setBgAudioPlaying(true)).catch(() => {});
+        }
+      }
+    }
+  };
+
+  const toggleBgAudio = () => {
+    if (!bgAudioRef.current) return;
+    if (bgAudioRef.current.paused) {
+      if (videoRef.current && !videoRef.current.muted) {
+        videoRef.current.muted = true;
+        setIsMuted(true);
+      }
+      bgAudioRef.current.play().then(() => setBgAudioPlaying(true)).catch(() => {});
+    } else {
+      bgAudioRef.current.pause();
+      setBgAudioPlaying(false);
     }
   };
 
@@ -242,28 +362,44 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
           <span className="media-brand-tag">CINEMA &amp; STILLS</span>
         </div>
 
-        <ul className="media-nav-links">
-          <li>
-            <a href="#about" className="interactive" onClick={(e) => scrollToSection(e, 'about')}>
-              About
-            </a>
-          </li>
-          <li>
-            <a href="#services" className="interactive" onClick={(e) => scrollToSection(e, 'services')}>
-              Services
-            </a>
-          </li>
-          <li>
-            <a href="#work" className="interactive" onClick={(e) => scrollToSection(e, 'work')}>
-              Work
-            </a>
-          </li>
-          <li>
-            <a href="#contact" className="interactive" onClick={(e) => scrollToSection(e, 'contact')}>
-              Contact
-            </a>
-          </li>
-        </ul>
+        <div className="media-nav-right">
+          <ul className="media-nav-links">
+            <li>
+              <a href="#about" className="interactive" onClick={(e) => scrollToSection(e, 'about')}>
+                About
+              </a>
+            </li>
+            <li>
+              <a href="#services" className="interactive" onClick={(e) => scrollToSection(e, 'services')}>
+                Services
+              </a>
+            </li>
+            <li>
+              <a href="#work" className="interactive" onClick={(e) => scrollToSection(e, 'work')}>
+                Work
+              </a>
+            </li>
+            <li>
+              <a href="#contact" className="interactive" onClick={(e) => scrollToSection(e, 'contact')}>
+                Contact
+              </a>
+            </li>
+          </ul>
+
+          <button
+            className={`media-ambient-sound-btn interactive ${bgAudioPlaying ? 'is-playing' : ''}`}
+            onClick={toggleBgAudio}
+            title={bgAudioPlaying ? 'Mute Background Music' : 'Play Background Music'}
+            aria-label="Toggle background music"
+          >
+            <span className="ambient-bars" aria-hidden="true">
+              <span className="bar bar-1" />
+              <span className="bar bar-2" />
+              <span className="bar bar-3" />
+            </span>
+            <span className="ambient-label">{bgAudioPlaying ? 'AUDIO ON' : 'AUDIO OFF'}</span>
+          </button>
+        </div>
       </nav>
 
       {/* HERO SECTION */}
