@@ -10,10 +10,13 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
   const [videoQuality, setVideoQuality] = useState('hd'); // 'hd' (10mb.mp4) on load for fast page render | '4k' on demand
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [bgAudioPlaying, setBgAudioPlaying] = useState(false);
+  const [showAudioPrompt, setShowAudioPrompt] = useState(false);
 
   const videoRef = useRef(null);
   const bgAudioRef = useRef(null);
   const isNearVideoRef = useRef(false);
+  const userManuallyMutedRef = useRef(false);
+  const playPendingRef = useRef(false);
 
   // Background Audio Autoplay when MediaWorld opens
   useEffect(() => {
@@ -22,36 +25,55 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
     audio.volume = 1.0;
     bgAudioRef.current = audio;
 
-    const startAudio = () => {
-      if (!isNearVideoRef.current && audio.paused) {
-        audio.play().then(() => setBgAudioPlaying(true)).catch(() => {});
+    let cleanupListeners = () => {};
+
+    const tryStartAudio = () => {
+      if (isNearVideoRef.current || userManuallyMutedRef.current || !bgAudioRef.current) return;
+      if (bgAudioRef.current.paused && !playPendingRef.current) {
+        playPendingRef.current = true;
+        bgAudioRef.current
+          .play()
+          .then(() => {
+            playPendingRef.current = false;
+            setBgAudioPlaying(true);
+            setShowAudioPrompt(false);
+            cleanupListeners();
+          })
+          .catch(() => {
+            playPendingRef.current = false;
+            // Direct load without prior user interaction blocked by browser autoplay policy
+            setShowAudioPrompt(true);
+          });
       }
     };
 
-    // Try autoplay immediately (will work if user clicked from Portal)
-    startAudio();
+    // User gesture events that browsers accept for audio activation.
+    // ('scroll' is intentionally excluded: modern browsers reject scroll as a user activation)
+    const gestureEvents = ['pointerdown', 'click', 'touchstart', 'keydown'];
 
-    // In case browser policy blocked autoplay on direct load, play on first user interaction
     const onUserGesture = () => {
-      startAudio();
-      window.removeEventListener('click', onUserGesture);
-      window.removeEventListener('scroll', onUserGesture);
-      window.removeEventListener('touchstart', onUserGesture);
-      window.removeEventListener('keydown', onUserGesture);
+      tryStartAudio();
     };
 
-    window.addEventListener('click', onUserGesture);
-    window.addEventListener('scroll', onUserGesture);
-    window.addEventListener('touchstart', onUserGesture);
-    window.addEventListener('keydown', onUserGesture);
+    gestureEvents.forEach((evt) => {
+      window.addEventListener(evt, onUserGesture, { passive: true });
+    });
+
+    cleanupListeners = () => {
+      gestureEvents.forEach((evt) => {
+        window.removeEventListener(evt, onUserGesture);
+      });
+    };
+
+    // Try autoplay immediately (will work immediately if visitor clicked into MediaWorld from Portal)
+    tryStartAudio();
 
     return () => {
-      window.removeEventListener('click', onUserGesture);
-      window.removeEventListener('scroll', onUserGesture);
-      window.removeEventListener('touchstart', onUserGesture);
-      window.removeEventListener('keydown', onUserGesture);
-      audio.pause();
-      audio.src = '';
+      cleanupListeners();
+      if (bgAudioRef.current) {
+        bgAudioRef.current.pause();
+        bgAudioRef.current.src = '';
+      }
     };
   }, []);
 
@@ -87,8 +109,8 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
               videoRef.current.muted = true;
               setIsMuted(true);
             }
-            // 2. Resume background music
-            if (bgAudioRef.current && bgAudioRef.current.paused) {
+            // 2. Resume background music only if user hasn't manually silenced it
+            if (!userManuallyMutedRef.current && bgAudioRef.current && bgAudioRef.current.paused) {
               bgAudioRef.current.play().then(() => setBgAudioPlaying(true)).catch(() => {});
             }
           }
@@ -271,7 +293,7 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
         }
       } else {
         // If user muted the video and is not near the video, resume background audio
-        if (bgAudioRef.current && bgAudioRef.current.paused && !isNearVideoRef.current) {
+        if (!userManuallyMutedRef.current && bgAudioRef.current && bgAudioRef.current.paused && !isNearVideoRef.current) {
           bgAudioRef.current.play().then(() => setBgAudioPlaying(true)).catch(() => {});
         }
       }
@@ -281,14 +303,23 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
   const toggleBgAudio = () => {
     if (!bgAudioRef.current) return;
     if (bgAudioRef.current.paused) {
+      userManuallyMutedRef.current = false;
       if (videoRef.current && !videoRef.current.muted) {
         videoRef.current.muted = true;
         setIsMuted(true);
       }
-      bgAudioRef.current.play().then(() => setBgAudioPlaying(true)).catch(() => {});
+      bgAudioRef.current
+        .play()
+        .then(() => {
+          setBgAudioPlaying(true);
+          setShowAudioPrompt(false);
+        })
+        .catch(() => {});
     } else {
+      userManuallyMutedRef.current = true;
       bgAudioRef.current.pause();
       setBgAudioPlaying(false);
+      setShowAudioPrompt(false);
     }
   };
 
@@ -387,7 +418,7 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
           </ul>
 
           <button
-            className={`media-ambient-sound-btn interactive ${bgAudioPlaying ? 'is-playing' : ''}`}
+            className={`media-ambient-sound-btn interactive ${bgAudioPlaying ? 'is-playing' : ''} ${showAudioPrompt && !bgAudioPlaying ? 'has-prompt' : ''}`}
             onClick={toggleBgAudio}
             title={bgAudioPlaying ? 'Mute Background Music' : 'Play Background Music'}
             aria-label="Toggle background music"
@@ -972,6 +1003,42 @@ export default function MediaWorld({ onBackToPortal, onSwitchToDev }) {
           </div>,
           document.body
         )}
+      {/* DIRECT-LINK FLOATING AUDIO PROMPT (Discreet hint shown only when browser blocks direct cold autoplay) */}
+      {showAudioPrompt && !bgAudioPlaying && (
+        <aside
+          className="media-audio-toast interactive"
+          onClick={() => {
+            userManuallyMutedRef.current = false;
+            if (bgAudioRef.current) {
+              bgAudioRef.current.play().then(() => {
+                setBgAudioPlaying(true);
+                setShowAudioPrompt(false);
+              }).catch(() => {});
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          title="Click to enable sound"
+        >
+          <span className="media-audio-toast-bars" aria-hidden="true">
+            <span className="bar bar-1" />
+            <span className="bar bar-2" />
+            <span className="bar bar-3" />
+          </span>
+          <span className="media-audio-toast-text">Tap anywhere to enable sound</span>
+          <button
+            type="button"
+            className="media-audio-toast-close"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowAudioPrompt(false);
+            }}
+            aria-label="Dismiss sound prompt"
+          >
+            ✕
+          </button>
+        </aside>
+      )}
     </div>
   );
 }
